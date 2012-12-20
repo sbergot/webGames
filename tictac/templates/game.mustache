@@ -7,11 +7,10 @@
   <p>{{ title }}</p>
   {{{ game_body }}}
   <a id="tomain" href="/">return to game list</a>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script src="js/socket.io.js"></script>
   {{#scripts}}
   <script type="text/javascript" src="{{path}}"></script>
   {{/scripts}}
-  <script type="text/javascript">
-    initEvents();
-  </script>
 </body>
 </html>

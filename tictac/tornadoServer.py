@@ -1,6 +1,11 @@
+import itertools
 import json
 import tornado.ioloop
 import tornado.web
+import tornadio2.conn
+import tornadio2.router
+import tornadio2.server
+import players
 
 import tic
 import render
@@ -44,6 +49,45 @@ class Reset(tornado.web.RequestHandler):
     def post(self):
         grid.reset()
 
+
+class PlayersConnection(tornadio2.conn.SocketConnection):
+    # Class level variable
+    players = {}
+    symbols = ["x", "o"]
+    current = ["x"]
+
+    def on_open(self, info):
+        self.symbol = self.symbols.pop()
+        self.players[self.symbol] = self
+        self.emit('getsymbol', symbol=self.symbol)
+
+    @tornadio2.event
+    def play(self, box, grid):
+        if not self.current[0] == self.symbols:
+            self.emit(
+                'replay',
+                status = "not your turn to play",
+                grid = grid.grid)
+            return
+            
+        if not grid.isfree(box):
+            self.emit(
+                'replay',
+                status = "{} is already taken".format(box),
+                grid = grid.grid)
+            return
+
+        grid.play(box, "x")
+        status = grid.check_status()
+
+        for p in self.players:
+            players[p].emit('newturn', grid=grid, status=status)
+
+    def on_close(self):
+        self.players.pop(self.symbol)
+        self.symbols.append(self.symbol)
+
+GameRouter = tornadio2.router.TornadioRouter(PlayersConnection)
 handlers = [
     (r'/css/(.+)', tornado.web.StaticFileHandler, {'path': "css"}),
     (r'/js/(.+)', tornado.web.StaticFileHandler, {'path': "js"}),
@@ -54,10 +98,13 @@ handlers = [
     (r'/reset', Reset)
 ]
 application = tornado.web.Application(
-    handlers,
-    debug=True
+    GameRouter.apply_routes(handlers),
+    debug=True,
+    socket_io_port = 8001
     )
 
 if __name__ == "__main__":
+    import logging
+    logging.getLogger().setLevel(logging.DEBUG)
     application.listen(8888)
-    tornado.ioloop.IOLoop.instance().start()
+    tornadio2.server.SocketServer(application)

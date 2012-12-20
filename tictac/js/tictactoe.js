@@ -98,6 +98,5 @@ function initEvents() {
     })();
     }
     document.getElementById("reset").onclick = reset
-    windows.onload = reset
     set_status("start")
 }

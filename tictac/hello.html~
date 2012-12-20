@@ -1,0 +1,11 @@
+<html>
+<head>
+</head>
+<body>
+    <span id="message"></span>
+    <script type="text/javascript" src="js/test.js"></script>
+    <script type="text/javascript">
+      hello();    
+    </script>
+</body>
+</html>

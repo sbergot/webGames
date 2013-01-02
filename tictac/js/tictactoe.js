@@ -54,19 +54,16 @@ function reset() {
 function initEvents() {
     for (var i in ttt.grid)
     {
-    var box = ttt.grid[i];
-    box.onclick = (function() {
-        var id = box.id;
-        return function() {
-            var data = {fullGrid : getJSONGrid(), box : id};
-            s.emit('play', data)
-        };
-    })();
-    };
-    document.getElementById("reset").onclick = function()
-    {
-	s.emit('resetGrid', {name : 'toto'});
-    };
+	var box = ttt.grid[i];
+	$(box).click((function() {
+            var id = box.id;
+            return function() {
+		var data = {fullGrid : getJSONGrid(), box : id};
+		s.emit('play', data);
+            };
+	})());
+    }
+    $("#reset").click(function() {s.emit('resetGrid', {name : 'toto'});});
     $("#symbol").html("no symbol");
     $("#response").html("no status");
 }

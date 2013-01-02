@@ -5,8 +5,15 @@ var s = new io.connect('http://' + window.location.hostname + ':8001', {
         });
 
 s.on('connect', function() {set_status("connected")});
-s.on('getsymbol', function(symbol) {$("#symbol").html(symbol)});
-s.on('newturn', function(grid, status) {$('#response').html(status)});
+s.on('getsymbol', function(data) {$("#symbol").html(data.symbol)});
+s.on('newturn', function(data) {
+    $('#response').html(data.status);
+    set_grid(data.grid);
+});
+s.on('replay', function(data) {
+    $('#response').html(data.status);
+    set_grid(data.grid);
+});
 
 
 
@@ -15,11 +22,9 @@ function set_status(status) {
 }
 
 function set_grid(grid) {
-    var response = JSON.parse(req.responseText);
-    set_status(response.status)
     for (var box in ttt.grid)
     {
-	ttt.grid[box].innerHTML = response.grid[box];
+	ttt.grid[box].innerHTML = grid[box];
     }
 }
 
@@ -65,6 +70,7 @@ function initEvents() {
     }
     $("#reset").click(function() {s.emit('resetGrid', {name : 'toto'});});
     $("#symbol").html("no symbol");
+    //$("#symbol").click(function() {s.emit});
     $("#response").html("no status");
 }
 

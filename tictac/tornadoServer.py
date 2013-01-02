@@ -58,14 +58,16 @@ class PlayersConnection(tornadio2.conn.SocketConnection):
         status = grid.check_status()
 
         for p in self.players:
-            players[p].emit('newturn', grid=fullGrid, status=status)
+            self.players[p].emit('newturn', grid=grid.grid, status=status)
 
     @tornadio2.event
     def resetGrid(self, name):
         grid.reset()
+        #import pdb; pdb.set_trace()
+        status=grid.check_status()
         for p in self.players:
             print p
-            players[p].emit('newturn', grid=fullGrid, status=status)
+            self.players[p].emit('newturn', grid=grid.grid, status=status)
 
     def on_close(self):
         self.players.pop(self.symbol)

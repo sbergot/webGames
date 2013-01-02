@@ -4,12 +4,14 @@ var s = new io.connect('http://' + window.location.hostname + ':8001', {
             rememberTransport: false
         });
 
-s.on('connect', function() {set_status("connected")})
+s.on('connect', function() {set_status("connected")});
+s.on('getsymbol', function(symbol) {$("#symbol").html(symbol)});
+s.on('newturn', function(grid, status) {$('#response').html(status)});
 
 
 
 function set_status(status) {
-    $('#response').html =  "status: " + status;
+    $('#response').html("status: " + status);
 }
 
 function set_grid(grid) {
@@ -45,8 +47,8 @@ var ttt = {
 }
 
 function reset() {
-    $('.box').html = '';
-    set_status('start')
+    $('.box').html('');
+    set_status('start');
 }
 
 function initEvents() {
@@ -56,12 +58,17 @@ function initEvents() {
     box.onclick = (function() {
         var id = box.id;
         return function() {
-            var data = {grid : getJSONGrid(), box : id};
-            s.emit('play', data, set_grid)
+            var data = {fullGrid : getJSONGrid(), box : id};
+            s.emit('play', data)
         };
     })();
-    }
-    document.getElementById("reset").onclick = s.emit('reset', {}, reset)
+    };
+    document.getElementById("reset").onclick = function()
+    {
+	s.emit('resetGrid', {name : 'toto'});
+    };
+    $("#symbol").html("no symbol");
+    $("#response").html("no status");
 }
 
 initEvents();

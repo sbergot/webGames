@@ -25,31 +25,6 @@ class Missing(tornado.web.RequestHandler):
     def get(self):
         return self.write("")
 
-class Play(tornado.web.RequestHandler):
-    def post(self, box):
-        self.set_header("Content-Type", "application/json")
-        if not grid.isfree(box):
-            self.write(json.dumps({"status" : "can't play {}".format(box), "grid" : grid.grid}))
-            return
-
-        grid.play(box, "x")
-        status = grid.check_status()
-        if status != "continue":
-            self.write(json.dumps({"status" : status, "grid" : grid.grid}))
-            return
-
-        tic.play(grid)
-        status = grid.check_status()
-        self.write(json.dumps({
-                "status" : status,
-                "grid" : grid.grid
-                }))
-
-class Reset(tornado.web.RequestHandler):
-    def post(self):
-        grid.reset()
-
-
 class PlayersConnection(tornadio2.conn.SocketConnection):
     # Class level variable
     players = {}
@@ -60,28 +35,37 @@ class PlayersConnection(tornadio2.conn.SocketConnection):
         self.symbol = self.symbols.pop()
         self.players[self.symbol] = self
         self.emit('getsymbol', symbol=self.symbol)
+        print "new player: ", self.symbol
 
     @tornadio2.event
-    def play(self, box, grid):
-        if not self.current[0] == self.symbols:
+    def play(self, box, fullGrid):
+        #import pdb; pdb.set_trace()
+        if not self.current[0] == self.symbol:
             self.emit(
                 'replay',
                 status = "not your turn to play",
-                grid = grid.grid)
+                grid = fullGrid)
             return
             
         if not grid.isfree(box):
             self.emit(
                 'replay',
                 status = "{} is already taken".format(box),
-                grid = grid.grid)
+                grid = fullGrid)
             return
 
         grid.play(box, "x")
         status = grid.check_status()
 
         for p in self.players:
-            players[p].emit('newturn', grid=grid, status=status)
+            players[p].emit('newturn', grid=fullGrid, status=status)
+
+    @tornadio2.event
+    def resetGrid(self, name):
+        grid.reset()
+        for p in self.players:
+            print p
+            players[p].emit('newturn', grid=fullGrid, status=status)
 
     def on_close(self):
         self.players.pop(self.symbol)
@@ -94,8 +78,6 @@ handlers = [
     (r'/', IndexHandler),
     (r'/tictactoe', TicTacToe),
     (r'/favicon.ico', Missing),
-    (r'/play/(.*)', Play),
-    (r'/reset', Reset)
 ]
 application = tornado.web.Application(
     GameRouter.apply_routes(handlers),

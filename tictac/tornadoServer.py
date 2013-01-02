@@ -39,7 +39,6 @@ class PlayersConnection(tornadio2.conn.SocketConnection):
 
     @tornadio2.event
     def play(self, box, fullGrid):
-        #import pdb; pdb.set_trace()
         if not self.current[0] == self.symbol:
             self.emit(
                 'replay',
@@ -54,7 +53,8 @@ class PlayersConnection(tornadio2.conn.SocketConnection):
                 grid = fullGrid)
             return
 
-        grid.play(box, "x")
+        grid.play(box, self.current[0])
+        self.current[0] = "x" if self.current[0] == "o" else "o"
         status = grid.check_status()
 
         for p in self.players:
@@ -63,10 +63,8 @@ class PlayersConnection(tornadio2.conn.SocketConnection):
     @tornadio2.event
     def resetGrid(self, name):
         grid.reset()
-        #import pdb; pdb.set_trace()
         status=grid.check_status()
         for p in self.players:
-            print p
             self.players[p].emit('newturn', grid=grid.grid, status=status)
 
     def on_close(self):

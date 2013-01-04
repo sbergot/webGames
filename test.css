@@ -1,0 +1,12 @@
+.menu > li
+{
+    display : inline;
+}
+#header
+{
+    background-color : red;
+    /*position : fixed;*/
+    /*position : absolute;*/
+    top : 0;
+    width : 100%;
+}

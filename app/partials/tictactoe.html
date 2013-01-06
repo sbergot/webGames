@@ -1,19 +1,9 @@
 <link rel="stylesheet" href="css/tic.css"/>
 <table>
-  <tr>
-    <td class="box" id="11"></td>
-    <td class="box" id="12"></td>
-    <td class="box" id="13"></td>
-  </tr>
-  <tr>
-    <td class="box" id="21"></td>
-    <td class="box" id="22"></td>
-    <td class="box" id="23"></td>
-  </tr>
-  <tr>
-    <td class="box" id="31"></td>
-    <td class="box" id="32"></td>
-    <td class="box" id="33"></td>
+  <tr ng-repeat="row in grid">
+    <td ng-repeat="cell in row" class="box" ng-click="play(cell.coord)">
+      {{cell.value}}
+    </td>
   </tr>
 </table>
 <div>Player symbol: {{symbol}}</div>

@@ -1,5 +1,8 @@
+import tornadio2
 import tornadio2.conn
 
+import tic
+grid = tic.Grid()
 class PlayersConnection(tornadio2.conn.SocketConnection):
     # Class level variable
     players = {}
@@ -33,7 +36,7 @@ class PlayersConnection(tornadio2.conn.SocketConnection):
         status = grid.check_status()
 
         for p in self.players:
-            self.players[p].emit('newturn', grid=grid.grid, status=status)
+            self.players[p].emit('newturn', grid=fullGrid, status=status)
 
     @tornadio2.event
     def resetGrid(self, name):

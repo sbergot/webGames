@@ -15,8 +15,8 @@
 
   <div id="main" ng-view></div>
 
-  <div id="footer">
-    <div>Angular seed app: v<span app-version></span></div>
+  <div id="footer" ng-controller="footerCtlr">
+    <div>Angular seed app: v{{version}}</div>
   </div>
 
   <!-- In production use:
@@ -25,6 +25,7 @@
   <script src="lib/angular/angular.js"></script>
   <script src="js/app.js"></script>
   <script src="js/pushService.js"></script>
+  <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>

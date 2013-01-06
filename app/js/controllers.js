@@ -3,10 +3,12 @@
 /* Controllers */
 
 
-function MyCtrl1() {}
-MyCtrl1.$inject = [];
-
-
-function MyCtrl2() {
+function TictactoeCtrl($scope) {
+    $scope.status = "not connected";
+    $scope.symbol = "x";
 }
-MyCtrl2.$inject = [];
+
+
+function footerCtlr($scope, version) {
+    $scope.version = version;
+}

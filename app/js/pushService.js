@@ -7,25 +7,28 @@
 // In this case it is a simple value service.
 angular.module('socket', []).
   factory('socket', function ($rootScope) {
-    var socket = io.connect();
-    return {
-      on: function (eventName, callback) {
-        socket.on(eventName, function () {  
-          var args = arguments;
-          $rootScope.$apply(function () {
-            callback.apply(socket, args);
+      var socket =  new io.connect(
+	  'http://' + window.location.hostname + ':8001', {
+              rememberTransport: false
           });
-        });
-      },
-      emit: function (eventName, data, callback) {
-        socket.emit(eventName, data, function () {
-          var args = arguments;
-          $rootScope.$apply(function () {
-            if (callback) {
-              callback.apply(socket, args);
-            }
-          });
-        })
-      }
-    };
+      return {
+	  on: function (eventName, callback) {
+              socket.on(eventName, function () {  
+		  var args = arguments;
+		  $rootScope.$apply(function () {
+		      callback.apply(socket, args);
+		  });
+              });
+	  },
+	  emit: function (eventName, data, callback) {
+              socket.emit(eventName, data, function () {
+		  var args = arguments;
+		  $rootScope.$apply(function () {
+		      if (callback) {
+			  callback.apply(socket, args);
+		      }
+		  });
+              })
+	  }
+      };
   });

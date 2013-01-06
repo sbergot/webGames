@@ -1,22 +1,21 @@
-import itertools
-import json
-import tornado.ioloop
+from os import path as op
 import tornado.web
-import tornadio2.conn
-import tornadio2.router
-import tornadio2.server
+from tornadio2 import TornadioRouter, SocketServer
+import tic
+import player
 
+ROOT = op.normpath(op.dirname(__file__))
+grid = tic.Grid()
+GameRouter = TornadioRouter(player.PlayersConnection)
 handlers = [
-    (r'/(.+)', tornado.web.StaticFileHandler, {'path': "."}),
+    (r'/app/(.+)', tornado.web.StaticFileHandler, {'path': "app"}),
 ]
 application = tornado.web.Application(
-    handlers,
+    GameRouter.apply_routes(handlers),
     debug=True,
     socket_io_port = 8001
     )
-
 if __name__ == "__main__":
     import logging
     logging.getLogger().setLevel(logging.DEBUG)
-    application.listen(8888)
-    tornado.ioloop.IOLoop.instance().start()
+    SocketServer(application)

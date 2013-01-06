@@ -3,9 +3,10 @@
 /* Controllers */
 
 
-function TictactoeCtrl($scope) {
+function TictactoeCtrl($scope, socket) {
     $scope.status = "not connected";
     $scope.symbol = "x";
+    socket.on('connect', function() {$scope.status = "connected";});
 }
 
 

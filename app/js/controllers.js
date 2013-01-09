@@ -42,8 +42,8 @@ function MainCtrl($scope) {
 
 function LobbyCtrl($scope) {
     $scope.games = [
-	"toto",
-	"tata"
+	{ host :"toto"},
+	{ host :"tata"}
     ];
 }
 

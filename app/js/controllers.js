@@ -36,6 +36,16 @@ function TictactoeCtrl($scope, socket) {
 
 }
 
+function MainCtrl($scope) {
+    $scope.playerName = "toto";
+}
+
+function LobbyCtrl($scope) {
+    $scope.games = [
+	"toto",
+	"tata"
+    ];
+}
 
 function footerCtlr($scope, version) {
     $scope.version = version;

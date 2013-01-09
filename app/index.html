@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="webGames">
+<html lang="en" ng-app="webGames" ng-controller="MainCtrl">
 <head>
   <meta charset="utf-8">
   <title>Web board games</title>
@@ -11,6 +11,7 @@
       <li><a href="#/tictactoe">tictactoe</a></li>
       <li><a href="#/view2">view2</a></li>
     </ul>
+    <span>welcome {{playerName}}</span>
   </div>
 
   <div id="main" ng-view></div>

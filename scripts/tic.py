@@ -33,24 +33,39 @@ class Grid:
         self.reset()
 
     def reset(self):
-        self.grid = {box(x, y) : "" for x in range(1, 4) for y in range(1, 4)}
+        self.grid =  [
+            [{"coord" : "11", "value" : ""},
+	     {"coord" : "12", "value" : ""},
+	     {"coord" : "13", "value" : ""}],
+	    [{"coord" : "21", "value" : ""},
+	     {"coord" : "22", "value" : ""},
+	     {"coord" : "23", "value" : ""}],
+	    [{"coord" : "31", "value" : ""},
+	     {"coord" : "32", "value" : ""},
+	     {"coord" : "33", "value" : ""}]
+            ]
 
     def isfree(self, box):
-        return self.grid[box] == ""
+        return self.box(box)["value"] == ""
 
     def check_status(self):
         for row in get_rows():
-            symbols = set(self.grid[box] for box in row)
+            symbols = set(self.box(box)["value"] for box in row)
             if len(symbols) == 1 and u"" not in symbols:
                 return  "player {} wins".format(symbols.pop())
-        if "" in self.grid.values():
+        if "" in [box["value"] for row in self.grid for box in row]:
             return "continue"
         return "end"
 
+    def box(self, cell):
+	x = int(cell[0]) - 1;
+	y = int(cell[1]) - 1;
+        return self.grid[x][y]
+        
     def play(self, box, symbol):
         if not self.isfree(box):
             raise Exception("{} is not free!".format(box))
-        self.grid[box] = symbol
+        self.box(box)["value"] = symbol
 
 if __name__ == "__main__":
     print get_rows()

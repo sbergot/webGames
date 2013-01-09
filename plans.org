@@ -1,0 +1,21 @@
+
+* webGames
+** tools
+   http://tin.cr/
+   https://github.com/angular/angularjs-batarang
+** games
+*** tictactoe
+**** TODO make it work for 2 players
+**** TODO add game session
+***** TODO on login: list of games waiting for player
+***** TODO on login: new game button
+***** TODO on new game: list of player slots with status
+***** TODO on player slot: add computer button
+**** TODO add animations
+** libs
+*** socket.io
+*** angular
+*** jquery
+** hosting
+*** host on heroku
+*** check amazone webservice

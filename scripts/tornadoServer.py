@@ -1,10 +1,17 @@
 from os import path as op
 import tornado.web
-from tornadio2 import TornadioRouter, SocketServer
+from tornadio2 import TornadioRouter, SocketServer, SocketConnection
 import player
 
 ROOT = op.normpath(op.dirname(__file__))
-GameRouter = TornadioRouter(player.PlayersConnection)
+
+
+class MainConnection(SocketConnection):
+    __endpoints__ = {
+        '/tictactoe':player.PlayersConnection,
+        }
+
+GameRouter = TornadioRouter(MainConnection)
 handlers = [
     (r'/app/(.+)', tornado.web.StaticFileHandler, {'path': "app"}),
 ]

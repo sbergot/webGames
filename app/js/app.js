@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webGames', ['socket', 'infos']).
+angular.module('webGames', ['socket', 'infos', 'ngCookies']).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.when(
 	'/lobby',

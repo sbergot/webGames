@@ -17,27 +17,34 @@ function TictactoeCtrl($scope, socket) {
 	 {coord : "32", value : ""},
 	 {coord : "33", value : ""}]
     ]
+    
+    var conn = socket.connect('tictactoe');
     $scope.play = function(cell) {
 	var x = parseInt(cell[0]) - 1;
 	var y = parseInt(cell[1]) - 1;
 	$scope.grid[x][y].value = $scope.symbol;
-	socket.emit("play", {fullGrid : $scope.grid, box : cell});
+	conn.emit("play", {fullGrid : $scope.grid, box : cell});
     }
-    socket.on('connect', function() {$scope.status = "connected";});
-    socket.on('getsymbol', function(data) {$scope.symbol = data.symbol;});
-    socket.on('newturn', function(data) {
+    conn.on('connect', function() {$scope.status = "connected";});
+    conn.on('getsymbol', function(data) {$scope.symbol = data.symbol;});
+    conn.on('newturn', function(data) {
         $scope.status = data.status;
         $scope.grid = data.grid;
     });
-    socket.on('replay', function(data) {
+    conn.on('replay', function(data) {
         $scope.status = data.status;
         $scope.grid = data.grid;
     });
 
 }
 
-function MainCtrl($scope) {
+function MainCtrl($scope, $cookies, socket, guid) {
+    
+    if ($cookies.player_id === undefined) {
+	$cookies.player_id = guid();
+    }
     $scope.playerName = "toto";
+    $scope.player_id = $cookies.player_id;
 }
 
 function LobbyCtrl($scope) {

@@ -1,6 +1,7 @@
 html, body {
     height : 100%;
     margin : 0px;
+    background-color : #C0C0C0;
 }
 .menu
 {
@@ -21,7 +22,6 @@ html, body {
 #main
 {
     height : 80%;
-    background-color : #C0C0C0;
     margin : 0px;
 }
 #main > p
@@ -30,7 +30,6 @@ html, body {
 }
 #footer
 {
-    
     height : 10%;
     background-color : red;
 }

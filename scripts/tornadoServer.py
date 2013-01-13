@@ -14,6 +14,7 @@ class MainConnection(SocketConnection):
 GameRouter = TornadioRouter(MainConnection)
 handlers = [
     (r'/app/(.+)', tornado.web.StaticFileHandler, {'path': "app"}),
+    (r'/test/(.+)', tornado.web.StaticFileHandler, {'path': "test"}),
 ]
 application = tornado.web.Application(
     GameRouter.apply_routes(handlers),

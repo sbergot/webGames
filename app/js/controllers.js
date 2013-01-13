@@ -16,7 +16,7 @@ function TictactoeCtrl($scope, socket) {
 	[{coord : "31", value : ""},
 	 {coord : "32", value : ""},
 	 {coord : "33", value : ""}]
-    ]
+    ];
     
     var conn = socket.connect('tictactoe');
     $scope.play = function(cell) {
@@ -24,7 +24,7 @@ function TictactoeCtrl($scope, socket) {
 	var y = parseInt(cell[1]) - 1;
 	$scope.grid[x][y].value = $scope.symbol;
 	conn.emit("play", {fullGrid : $scope.grid, box : cell});
-    }
+    };
     conn.on('connect', function() {$scope.status = "connected";});
     conn.on('getsymbol', function(data) {$scope.symbol = data.symbol;});
     conn.on('newturn', function(data) {

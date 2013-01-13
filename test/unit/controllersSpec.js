@@ -2,30 +2,50 @@
 
 /* jasmine specs for controllers go here */
 
-describe('MyCtrl1', function(){
-  var myCtrl1;
+describe('TictactoeCtrl', function(){
+    var tic;
+    var scope = {};
+    var socket = {
+	connect : function(name) {
+	return {
+	    on : function() {},
+	    emit : function() {}
+	};
+	}
+    };
 
-  beforeEach(function(){
-    myCtrl1 = new MyCtrl1();
-  });
+    beforeEach(function(){
+	tic = new TictactoeCtrl(scope, socket);
+    });
 
 
-  it('should ....', function() {
-    //spec body
-  });
+    it('should ....', function() {
+	//spec body
+    });
 });
 
 
-describe('MyCtrl2', function(){
-  var myCtrl2;
+describe('MainCtrl', function(){
+    var main;
+    var scope = {};
+    var socket = {
+	connect : function(name) {
+	return {
+	    on : function() {},
+	    emit : function() {}
+	};
+	}
+    };
+    var cookies = {};
+    var guid = function() {return "toto";};
 
 
-  beforeEach(function(){
-    myCtrl2 = new MyCtrl2();
-  });
+    beforeEach(function(){
+	main = new MainCtrl(scope, cookies, socket, guid);
+    });
 
 
-  it('should ....', function() {
-    //spec body
-  });
+    it('should ....', function() {
+	//spec body
+    });
 });

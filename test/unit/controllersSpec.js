@@ -5,18 +5,12 @@ describe('TictactoeCtrl', function(){
     var scope;
     var socket;
 
-    beforeEach(function(){
-	scope = {};
-	socket = {
-	    connect : function(name) {
-		return {
-		    on : function() {},
-		    emit : function() {}
-		};
-	    }
-	};
+    beforeEach(module('TestSocket'));
+    beforeEach(inject(function($rootScope, socket){
+	scope = $rootScope.$new();
+	socket.server.play = function() {};
 	tic = new TictactoeCtrl(scope, socket);
-    });
+    }));
 
     it('should set the grid', function() {
 	expect(scope.grid).toEqual([
@@ -32,7 +26,7 @@ describe('TictactoeCtrl', function(){
 	]);
     });
 
-    it('provide a play function', function() {
+    it('should provide a play function', function() {
 	scope.play("11");
 	expect(scope.grid[0][0].value).toEqual("x");
 	scope.play("23");

@@ -11,39 +11,28 @@ angular.module('TestSocket', []).
 		  events[name] = callback;
 	      },
 	      emit : function(name, data) {
-		  server[name](data);
+		  if (server[name]) {
+		      server[name](data);
+		  }
 	      }
 	  };
       }
-      function get_socket(socket) {
-	  return {
-	      on: function (eventName, callback) {
-		  socket.on(eventName, function () {  
-		      var args = arguments;
-		      $rootScope.$apply(function () {
-			  callback.apply(socket, args);
-		      });
-		  });
-	      },
-	      emit: function (eventName, data, callback) {
-		  socket.emit(eventName, data, function () {
-		      var args = arguments;
-		      $rootScope.$apply(function () {
-			  if (callback) {
-			      callback.apply(socket, args);
-			  }
-		      });
-		  })
-	      }
-	  };
-      };
       return {
 	  connect : function(name) {
 	      if (sockets[name] === undefined) {
 		  sockets[name] = spawn_connection(name);
 	      }
-	      return get_socket(sockets[name]);
+	      return sockets[name];
 	  },
-	  server : server
+	  server : server,
+	  sockets : sockets,
+	  server_emit : function(connection, event, data) {
+	      //if (sockets[connection] && sockets[connection][event]) {
+		  sockets[connection][event](data);
+	      //}
+	  },
+	  server_on : function(event, callback) {
+	      server[event] = callback;
+	  }
       }
   });

@@ -3,13 +3,15 @@
 describe('TictactoeCtrl', function(){
     var tic;
     var scope;
-    var socket;
+    var socket_mock;
 
     beforeEach(module('TestSocket'));
+
     beforeEach(inject(function($rootScope, socket){
 	scope = $rootScope.$new();
-	socket.server.play = function() {};
+	socket.server_on('play', function() {});
 	tic = new TictactoeCtrl(scope, socket);
+	socket_mock = socket;
     }));
 
     it('should set the grid', function() {
@@ -31,6 +33,17 @@ describe('TictactoeCtrl', function(){
 	expect(scope.grid[0][0].value).toEqual("x");
 	scope.play("23");
 	expect(scope.grid[1][2].value).toEqual("x");
+    });
+
+    it('should connect to tictactoe', function() {
+	expect(socket_mock.sockets.tictactoe).toBeTrusty();
+    });
+
+    it('should accept a symbol', function() {
+	socket_mock.server_emit('tictactoe',
+				'getsymbol',
+				{symbol : 'toto'});
+	expect(scope.symbol).toEqual("toto");
     });
 });
 

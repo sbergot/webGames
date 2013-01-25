@@ -3,7 +3,7 @@
 /* Controllers */
 
 
-function TictactoeCtrl($scope, socket) {
+function TictactoeCtrl($scope, socket, $routeParams) {
     $scope.status = "not connected";
     $scope.symbol = "x";
     $scope.grid = [
@@ -17,7 +17,7 @@ function TictactoeCtrl($scope, socket) {
 	 {coord : "32", value : ""},
 	 {coord : "33", value : ""}]
     ];
-    
+   $scope.game_id = $routeParams.id; 
     var conn = socket.connect('tictactoe');
     $scope.play = function(cell) {
 	var x = parseInt(cell[0]) - 1;
@@ -45,13 +45,13 @@ function MainCtrl($scope, $cookies, socket, guid) {
     }
     $scope.playerName = "toto";
     $scope.player_id = $cookies.player_id;
+
+    $scope.new_id = function new_id() {$scope.player_id = guid();};
 }
 
-function LobbyCtrl($scope) {
-    $scope.games = [
-	{ host :"toto"},
-	{ host :"tata"}
-    ];
+function LobbyCtrl($scope, socket) {
+    var conn = socket.connect('lobby');
+    conn.on('get_sessions', function(data) {$scope.sessions = data.sessions;});
 }
 
 function footerCtlr($scope, version) {

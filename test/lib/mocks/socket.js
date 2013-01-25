@@ -14,7 +14,8 @@ angular.module('TestSocket', []).
 		  if (server[name]) {
 		      server[name](data);
 		  }
-	      }
+	      },
+	      events : events
 	  };
       }
       return {
@@ -28,7 +29,7 @@ angular.module('TestSocket', []).
 	  sockets : sockets,
 	  server_emit : function(connection, event, data) {
 	      //if (sockets[connection] && sockets[connection][event]) {
-		  sockets[connection][event](data);
+		  sockets[connection].events[event](data);
 	      //}
 	  },
 	  server_on : function(event, callback) {

@@ -1,16 +1,16 @@
 'use strict';
 
+beforeEach(module('TestSocket'));
 describe('TictactoeCtrl', function(){
     var tic;
     var scope;
     var socket_mock;
 
-    beforeEach(module('TestSocket'));
 
     beforeEach(inject(function($rootScope, socket){
 	scope = $rootScope.$new();
 	socket.server_on('play', function() {});
-	tic = new TictactoeCtrl(scope, socket);
+	tic = new TictactoeCtrl(scope, socket, {id : "toto"});
 	socket_mock = socket;
     }));
 
@@ -36,7 +36,7 @@ describe('TictactoeCtrl', function(){
     });
 
     it('should connect to tictactoe', function() {
-	expect(socket_mock.sockets.tictactoe).toBeTrusty();
+	expect(socket_mock.sockets.tictactoe).toBeTruthy();
     });
 
     it('should accept a symbol', function() {
@@ -75,21 +75,26 @@ describe('MainCtrl', function(){
     it('should set a player name', function() {
 	expect(scope.player_name, "toto");
     });
+
 });
 
 describe('LobbyCtrl', function(){
-    var lobby, scope;
+    var lobby, scope, socket_mock;
 
-    beforeEach(function(){
-	scope = {};
-	lobby = new LobbyCtrl(scope);
-    });
 
-    it('should fetch the list of games', function(){
-	expect(scope.games).toEqual([
-	    { host :"toto"},
-	    { host :"tata"}
-	]);
+    beforeEach(inject(function($rootScope, socket){
+	scope = $rootScope.$new();
+	socket_mock = socket;
+	lobby = new LobbyCtrl(scope, socket);
+    }));
+
+    
+    it('should accept the game session list', function() {
+	var sessions = [{game : 'tictactoe', id : 'toto'}];
+	socket_mock.server_emit('lobby',
+				'get_sessions',
+				{sessions : sessions});
+	expect(scope.sessions).toEqual(sessions);
     });
 });
 

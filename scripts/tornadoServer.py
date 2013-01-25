@@ -2,13 +2,14 @@ from os import path as op
 import tornado.web
 from tornadio2 import TornadioRouter, SocketServer, SocketConnection
 import player
+import lobby
 
 ROOT = op.normpath(op.dirname(__file__))
-
 
 class MainConnection(SocketConnection):
     __endpoints__ = {
         '/tictactoe':player.PlayersConnection,
+        '/lobby':lobby.LobbyConnection,
         }
 
 GameRouter = TornadioRouter(MainConnection)

@@ -13,7 +13,6 @@ class PlayersConnection(tornadio2.conn.SocketConnection):
         self.symbol = self.symbols.pop()
         self.players[self.symbol] = self
         self.emit('getsymbol', symbol=self.symbol)
-        print "new player: ", self.symbol
 
     @tornadio2.event
     def play(self, box, fullGrid):

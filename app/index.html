@@ -9,9 +9,9 @@
   <div id="header">
     <ul class="menu">
       <li><a href="#/tictactoe">tictactoe</a></li>
-      <li><span id="welcome">welcome {{playerName}}</span></li>
-      <li><span id="welcome">id: {{player_id}}</span></li>
+      <li ng-click="new_id()">new id</li>
     </ul>
+    <span>welcome {{playerName}} id: {{player_id}}</span>
   </div>
 
   <div id="main" ng-view></div>

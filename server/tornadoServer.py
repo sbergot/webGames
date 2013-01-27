@@ -14,15 +14,22 @@ class MainConnection(SocketConnection):
 
 GameRouter = TornadioRouter(MainConnection)
 handlers = [
-    (r'/app/(.+)', tornado.web.StaticFileHandler, {'path': "app"}),
-    (r'/test/(.+)', tornado.web.StaticFileHandler, {'path': "test"}),
+    (r'/app/(.+)',
+     tornado.web.StaticFileHandler,
+     {'path': op.join(ROOT, '..', "app")}),
+    (r'/test/(.+)',
+     tornado.web.StaticFileHandler,
+     {'path': op.join(ROOT, '..', "test")}),
 ]
 application = tornado.web.Application(
     GameRouter.apply_routes(handlers),
     debug=True,
     socket_io_port = 8001
     )
-if __name__ == "__main__":
+def run():
     import logging
     logging.getLogger().setLevel(logging.DEBUG)
     SocketServer(application)
+
+if __name__ == "__main__":
+    run()

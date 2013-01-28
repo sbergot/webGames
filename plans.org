@@ -40,6 +40,7 @@
 ** games
 *** tictactoe
 **** DONE make it work for 2 players
+**** TODO move the server code in a proper model & test it
 **** TODO add animations
 *** alexandros
 **** grid

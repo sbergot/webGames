@@ -5,6 +5,7 @@ import player
 import lobby
 
 ROOT = op.normpath(op.dirname(__file__))
+BASE = op.join(ROOT, '..')
 
 class MainConnection(SocketConnection):
     __endpoints__ = {
@@ -14,12 +15,13 @@ class MainConnection(SocketConnection):
 
 GameRouter = TornadioRouter(MainConnection)
 handlers = [
-    (r'/app/(.+)',
+    (r'/app/(.*)',
      tornado.web.StaticFileHandler,
-     {'path': op.join(ROOT, '..', "app")}),
+     {'path': op.join(BASE, "app"),
+      'default_filename' : "index.html",}),
     (r'/test/(.+)',
      tornado.web.StaticFileHandler,
-     {'path': op.join(ROOT, '..', "test")}),
+     {'path': op.join(BASE, "test")}),
 ]
 application = tornado.web.Application(
     GameRouter.apply_routes(handlers),

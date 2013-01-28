@@ -18,14 +18,14 @@ class PlayersConnection(tornadio2.conn.SocketConnection):
     def play(self, box, fullGrid):
         if not self.current[0] == self.symbol:
             self.emit(
-                'replay',
+                'play',
                 status = "not your turn to play",
                 grid = grid.grid)
             return
             
         if not grid.isfree(box):
             self.emit(
-                'replay',
+                'play',
                 status = "{} is already taken".format(box),
                 grid = grid.grid)
             return
@@ -35,7 +35,7 @@ class PlayersConnection(tornadio2.conn.SocketConnection):
         status = grid.check_status()
 
         for p in self.players:
-            self.players[p].emit('newturn', grid=grid.grid, status=status)
+            self.players[p].emit('play', grid=grid.grid, status=status)
 
     @tornadio2.event
     def resetGrid(self, name):

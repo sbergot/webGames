@@ -17,7 +17,7 @@ function TictactoeCtrl($scope, socket, $routeParams) {
 	 {coord : "32", value : ""},
 	 {coord : "33", value : ""}]
     ];
-   $scope.game_id = $routeParams.id; 
+   $scope.game_id = "session-id"; 
     var conn = socket.connect('tictactoe');
     $scope.play = function(cell) {
 	var x = parseInt(cell[0]) - 1;
@@ -27,15 +27,10 @@ function TictactoeCtrl($scope, socket, $routeParams) {
     };
     conn.on('connect', function() {$scope.status = "connected";});
     conn.on('getsymbol', function(data) {$scope.symbol = data.symbol;});
-    conn.on('newturn', function(data) {
+    conn.on('play', function(data) {
         $scope.status = data.status;
         $scope.grid = data.grid;
     });
-    conn.on('replay', function(data) {
-        $scope.status = data.status;
-        $scope.grid = data.grid;
-    });
-
 }
 
 function MainCtrl($scope, $cookies, socket, guid) {

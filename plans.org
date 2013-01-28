@@ -3,15 +3,49 @@
 ** tools
    http://tin.cr/
    https://github.com/angular/angularjs-batarang
+** data model
+*** players
+**** name
+**** id
+**** connected?
+**** current session id
+*** session
+**** id
+**** name
+**** game
+**** list of players (human or not)
+*** games
+**** name
+**** URI
+**** status
+**** state
+** website
+*** TODO add game session
+**** DONE on login: list of games waiting for player
+**** DONE on login: new game button
+**** TODO on new game: list of player slots with status
+**** TODO on player slot: add computer button
+*** add menu items
+**** lobby
+     show session for a given game
+*** add session status
+    list of player slots.
+
+    + if player: name, connected?, game status
+    + if empty: add computer, open/close to players
+    + if computer: generated name, "kick" button
+*** add account status
+    name, disconnect
+*** add notification area
 ** games
 *** tictactoe
-**** TODO make it work for 2 players
-**** TODO add game session
-***** TODO on login: list of games waiting for player
-***** TODO on login: new game button
-***** TODO on new game: list of player slots with status
-***** TODO on player slot: add computer button
+**** DONE make it work for 2 players
 **** TODO add animations
+*** alexandros
+**** grid
+     3D grid: {0..n, 0..m, 0,1}
+
+     the third coord tells if a point is centered or cornered
 ** libs
 *** socket.io
 *** angular

@@ -1,7 +1,7 @@
 from os import path as op
 import tornado.web
 from tornadio2 import TornadioRouter, SocketServer, SocketConnection
-import player
+import tictactoe.connection
 import lobby
 
 ROOT = op.normpath(op.dirname(__file__))
@@ -9,7 +9,7 @@ BASE = op.join(ROOT, '..')
 
 class MainConnection(SocketConnection):
     __endpoints__ = {
-        '/tictactoe':player.PlayersConnection,
+        '/tictactoe':tictactoe.connection.TicTacToeConnection,
         '/lobby':lobby.LobbyConnection,
         }
 

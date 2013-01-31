@@ -1,5 +1,12 @@
 import tornadio2
 import tornadio2.conn
+import session
+import tictactoe.model
+
+SESSIONS = {}
+GAMES = {
+    "tictactoe" : tictactoe.model.TicTacToe
+    }
 
 class LobbyConnection(tornadio2.conn.SocketConnection):
     sessions = {
@@ -9,3 +16,10 @@ class LobbyConnection(tornadio2.conn.SocketConnection):
 
     def on_open(self, data):
         self.emit('get_sessions', sessions=self.sessions.values())
+
+    @tornadio2.event
+    def join(self, player_id, session_id, game):
+       if session_id in SESSIONS:
+           SESSIONS[session_id].players.append(player_id)
+       else:
+           SESSIONS[session_id] = session.Session(GAMES[game])

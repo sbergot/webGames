@@ -1,5 +1,7 @@
 <ol id="games">
   <li ng-repeat="session in sessions">
-    {{session.game}} - {{session.id}}
+    <a href="#/{{session.game}}" ngClick=join(session.id)>
+      {{session.game}} - {{session.id}}
+    </a>
   </li>
 <ol>

@@ -56,6 +56,13 @@ function MainCtrl($scope, $cookies, socket, guid) {
 function LobbyCtrl($scope, socket) {
     var conn = socket.connect('lobby');
     conn.on('get_sessions', function(data) {$scope.sessions = data.sessions;});
+    $scope.join = function(session_id) {
+	$scope.session_id = session_id;
+	conn.emit('join', {
+	    player : $scope.player_id,
+	    session_id : session_id
+	});
+    };
 }
 
 function footerCtlr($scope, version) {

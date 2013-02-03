@@ -4,7 +4,7 @@ import tictactoe.model
 class TestTicTacToe(unittest.TestCase):
 
     def setUp(self):
-        self.model = tictactoe.model.TicTacToe()
+        self.model = tictactoe.model.TicTacToe(object())
 
     def test_should_allow_x_to_play_first(self):
         status = self.model.play("00", "x")

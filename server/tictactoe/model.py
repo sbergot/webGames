@@ -1,4 +1,5 @@
 import random
+import game
 
 def get_rows():
     rows = []
@@ -67,9 +68,10 @@ class Grid:
             raise Exception("{} is not free!".format(box))
         self.box(box)["value"] = symbol
 
-class TicTacToe:
+class TicTacToe(game.Game):
 
-    def __init__(self):
+    def __init__(self, session):
+        game.Game.__init__(self, session)
         self.symbols = ["x", "o"]
         self.current = self.symbols[0]
         self.grid = Grid()

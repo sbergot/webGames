@@ -25,4 +25,11 @@ class SessionBroker:
         self.games[name] = constructor
         self.sessions[name] = {}
 
+    def getSessions(self):
+        res = {}
+        for name in self.sessions:
+            for id in self.sessions[name]:
+                res[id] = {"game" : name, "id" : id}
+        return res
+
 SESSION_BROKER = SessionBroker()

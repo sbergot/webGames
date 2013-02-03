@@ -35,3 +35,12 @@ class TestSessionBroker(unittest.TestCase):
         session2 = self.session_broker.get_session('my-game', 'toto')
         self.assertIs(session1, session2)
 
+    def test_should_provide_the_list_of_session(self):
+        sessions = {
+            "toto" : {"game" : "my-game", "id" : "toto"},
+            "tata" : {"game" : "my-game", "id" : "tata"},
+            }
+        self.session_broker.get_session('my-game', 'toto')
+        self.session_broker.get_session('my-game', 'tata')
+        self.assertEqual(self.session_broker.getSessions(), sessions)
+

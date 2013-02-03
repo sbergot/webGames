@@ -4,7 +4,6 @@ import session
 import model
 
 class TicTacToeConnection(player.GameConnection):
-    SESSIONS = {}
 
     @tornadio2.event
     def play(self, box, symbol, fullGrid):
@@ -22,10 +21,6 @@ class TicTacToeConnection(player.GameConnection):
 
     @tornadio2.event
     def register(self, player_name, player_id, session_id):
-        if session_id in self.SESSIONS:
-            self.session = self.SESSIONS[session_id]
-        else:
-            self.session = session.Session(model.TicTacToe())
-            self.SESSIONS[session_id] = self.session
-        self.session.players.append(self)
+        self.session = session.SESSION_BROKER.get_session("tictactoe", session_id)
+        self.session.addPlayer(self)
         self.emit('getsymbol', symbol=self.session.symbols.pop())

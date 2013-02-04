@@ -7,5 +7,5 @@ class GameConnection(tornadio2.conn.SocketConnection):
         pass
 
     def broadcast(self, event, **kwargs):
-        for player in self.session.players:
+        for player in self.game_session.players:
             player.emit(event, **kwargs)

@@ -15,4 +15,5 @@ class LobbyConnection(tornadio2.conn.SocketConnection):
         }
 
     def on_open(self, data):
-        self.emit('get_sessions', sessions=self.sessions.values())
+        self.emit('get_sessions',
+                  sessions=session.SESSION_BROKER.getSessions())

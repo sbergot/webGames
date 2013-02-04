@@ -2,7 +2,11 @@ from os import path as op
 import tornado.web
 from tornadio2 import TornadioRouter, SocketServer, SocketConnection
 import tictactoe.connection
+import tictactoe.model
 import lobby
+import session
+
+session.SESSION_BROKER.registerGame("tictactoe", tictactoe.model.TicTacToe)
 
 ROOT = op.normpath(op.dirname(__file__))
 BASE = op.join(ROOT, '..')

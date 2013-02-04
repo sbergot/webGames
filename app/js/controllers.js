@@ -36,8 +36,8 @@ function TictactoeCtrl($scope, socket, $routeParams) {
     });
     conn.emit('register', {
 	player_name : $scope.player_name,
-	player_id : player_id,
-	session_id : session_id
+	player_id : $scope.player_id,
+	session_id : $scope.session_id
     });
 }
 

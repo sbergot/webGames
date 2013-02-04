@@ -2,6 +2,7 @@ import tornadio2
 import player
 import session
 import model
+import uuid
 
 class TicTacToeConnection(player.GameConnection):
 
@@ -24,5 +25,6 @@ class TicTacToeConnection(player.GameConnection):
         self.game_session = \
             session.SESSION_BROKER.get_session("tictactoe", session_id)
         self.game_session.addPlayer(self)
+        self.emit('get-session-id', id=str(uuid.uuid4()))
         self.emit('getsymbol',
                   symbol=self.game_session.model.symbols.pop())

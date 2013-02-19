@@ -29,6 +29,7 @@ describe('TictactoeCtrl', function(){
     });
 
     it('should provide a play function', function() {
+	scope.symbol = "x";
 	scope.play("11");
 	expect(scope.grid[0][0].value).toEqual("x");
 	scope.play("23");

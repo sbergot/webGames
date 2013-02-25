@@ -1,6 +1,8 @@
 import unittest
 import session
 import game
+import player
+from FakeConnection import FakeConnection
 
 class MyModel(game.Game):
     pass
@@ -11,12 +13,21 @@ class TestSession(unittest.TestCase):
         self.session = session.Session(MyModel)
 
     def test_should_be_initially_empty(self):
-        self.assertEqual(self.session.players, [])
+        self.assertEqual(self.session.players, {})
 
     def test_should_allow_to_add_players(self):
-        self.session.addPlayer('tata')
-        self.assertEqual(self.session.players, ['tata'])
+        playerInstance = player.Player()
+        self.session.addPlayer('tata', playerInstance)
+        self.assertEqual(self.session.players['tata'], playerInstance)
 
+    def test_should_receive_connection_of_players(self):
+        playerInstance = player.Player()
+        self.session.addPlayer('tata', playerInstance)
+        self.session.connect(FakeConnetion, "tata")
+        self.assertEqual(
+            length(self.session.players['tata'].connections),
+            1)
+        
 class TestSessionBroker(unittest.TestCase):
 
     def setUp(self):

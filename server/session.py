@@ -1,11 +1,11 @@
 class Session:
 
     def __init__(self, model):
-        self.players = []
+        self.players = {}
         self.model = model(self)
 
-    def addPlayer(self, player):
-        self.players.append(player)
+    def addPlayer(self, id, instance):
+        self.players[id] = instance
 
 class SessionBroker:
 

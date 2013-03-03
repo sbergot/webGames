@@ -1,3 +1,5 @@
+import player
+
 class Session:
 
     def __init__(self, model):
@@ -8,6 +10,8 @@ class Session:
         self.players[id] = instance
 
     def connect(self, conn, player_id):
+        if player_id not in self.players:
+            self.addPlayer(player_id, player.Player())
         self.players[player_id].connect(conn)
 
     def emit(self, event, data, player_id):
@@ -16,6 +20,12 @@ class Session:
     def broadcast(self, event, data):
         for player in self.players.values():
             player.emit(event, data)
+
+    def get_symbol(self, player_id):
+        player = self.players[player_id]
+        if player.symbol is None:
+            player.symbol = self.model.pop_symbol()
+        return player.symbol
 
 class SessionBroker:
 

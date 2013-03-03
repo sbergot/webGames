@@ -5,7 +5,16 @@ import game
 import player
 
 class MyModel(game.Game):
-    pass
+
+    def __init__(self, model_factory):
+        self.symbols = [
+            "fake symbol 1",
+            "fake symbol 2",
+            "fake symbol 3",
+            ]
+
+    def pop_symbol(self):
+        return self.symbols.pop()
 
 class TestSession(unittest.TestCase):
 
@@ -15,38 +24,40 @@ class TestSession(unittest.TestCase):
     def test_should_be_initially_empty(self):
         self.assertEqual(self.session.players, {})
 
-    def test_should_allow_to_add_players(self):
-        playerInstance = player.Player()
-        self.session.addPlayer('tata', playerInstance)
-        self.assertEqual(self.session.players['tata'], playerInstance)
-
     def test_should_receive_connection_of_players(self):
-        playerInstance = player.Player()
-        self.session.addPlayer('tata', playerInstance)
         self.session.connect(mock.Mock(), "tata")
         self.assertEqual(
             len(self.session.players['tata'].connections),
             1)
 
     def test_should_allow_to_push_data_to_a_player(self):
-        playerInstance = player.Player()
-        self.session.addPlayer('tata', playerInstance)
         conn = mock.Mock()
         self.session.connect(conn, "tata")
         self.session.emit("event", {"toto" : "titi"}, "tata")
         conn.emit.assert_called_with("event", {"toto" : "titi"})
 
     def test_should_allow_to_broadcast_data_to_all_players(self):
-        self.session.addPlayer('tata', player.Player())
         conn_tata = mock.Mock()
         self.session.connect(conn_tata, "tata")
-        self.session.addPlayer('robert', player.Player())
         conn_robert = mock.Mock()
         self.session.connect(conn_robert, "robert")
         self.session.broadcast("event", {"key" : "value"})
         conn_tata.emit.assert_called_with("event", {"key" : "value"})
         conn_robert.emit.assert_called_with("event", {"key" : "value"})
         
+    def test_should_allow_player_to_get_a_symbol(self):
+        self.session.connect(mock.Mock(), "tata")
+        self.session.connect(mock.Mock(), "titi")
+        self.assertEqual(
+            self.session.get_symbol("tata"),
+            "fake symbol 3")
+        self.assertEqual(
+            self.session.get_symbol("tata"),
+            "fake symbol 3")
+        self.assertEqual(
+            self.session.get_symbol("titi"),
+            "fake symbol 2")
+
 class TestSessionBroker(unittest.TestCase):
 
     def setUp(self):

@@ -42,7 +42,7 @@ describe('TictactoeCtrl', function(){
 
     it('should accept a symbol', function() {
 	socket_mock.server_emit('tictactoe',
-				'getsymbol',
+				'get-symbol',
 				{symbol : 'toto'});
 	expect(scope.symbol).toEqual("toto");
     });

@@ -28,9 +28,15 @@ function TictactoeCtrl($scope, socket, $routeParams) {
 	    fullGrid : $scope.grid
 	});
     };
-    conn.on('connect', function() {$scope.status = "connected";});
-    conn.on('getsymbol', function(data) {$scope.symbol = data.symbol;});
-    conn.on('get-session-id', function(data) {$scope.session_id = data.id;});
+    conn.on('connect', function() {
+	$scope.status = "connected";
+    });
+    conn.on('get-symbol', function(data) {
+	$scope.symbol = data.symbol;
+    });
+    conn.on('get-session-id', function(data) {
+	$scope.session_id = data.id;
+    });
     conn.on('play', function(data) {
         $scope.status = data.status;
         $scope.grid = data.grid;

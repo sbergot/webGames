@@ -7,6 +7,16 @@ class Session:
     def addPlayer(self, id, instance):
         self.players[id] = instance
 
+    def connect(self, conn, player_id):
+        self.players[player_id].connect(conn)
+
+    def emit(self, event, data, player_id):
+        self.players[player_id].emit(event, data)
+
+    def broadcast(self, event, data):
+        for player in self.players.values():
+            player.emit(event, data)
+
 class SessionBroker:
 
     def __init__(self):

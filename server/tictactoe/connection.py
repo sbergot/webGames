@@ -1,7 +1,5 @@
 import tornadio2
 from gameconnection import GameConnection
-import session
-import model
 
 class TicTacToeConnection(GameConnection):
 

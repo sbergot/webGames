@@ -17,21 +17,28 @@ class MainConnection(SocketConnection):
         '/lobby':lobby.LobbyConnection,
         }
 
+class FileServer(tornado.web.StaticFileHandler):
+    def set_extra_headers(self, path):
+        self.set_header("Cache-control", "no-cache")
+
 GameRouter = TornadioRouter(MainConnection)
+
 handlers = [
     (r'/app/(.*)',
-     tornado.web.StaticFileHandler,
+     FileServer,
      {'path': op.join(BASE, "app"),
       'default_filename' : "index.html",}),
     (r'/test/(.+)',
-     tornado.web.StaticFileHandler,
+     FileServer,
      {'path': op.join(BASE, "test")}),
-]
+    ]
+
 application = tornado.web.Application(
     GameRouter.apply_routes(handlers),
     debug=True,
     socket_io_port = 8001
     )
+
 def run():
     import logging
     logging.getLogger().setLevel(logging.DEBUG)

@@ -9,8 +9,8 @@ class GameConnection(tornadio2.conn.SocketConnection):
         self.game_session.broadcast(event, kwargs)
 
     @tornadio2.event
-    def register(self, player_name, player_id, session_id):
-        if not session_id:
+    def register(self, player_name, player_id, session_id=None):
+        if session_id is None:
             session_id = str(uuid.uuid4())
         self.game_session = \
             SESSION_BROKER.get_session("tictactoe", session_id)

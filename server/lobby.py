@@ -1,22 +1,19 @@
 import tornadio2
 import tornadio2.conn
-import session
-import tictactoe.model
-
-SESSIONS = {}
-GAMES = {
-    "tictactoe" : tictactoe.model.TicTacToe
-    }
+from session import SESSION_BROKER
 
 class LobbyConnection(tornadio2.conn.SocketConnection):
-    sessions = {
-        #"toto" : {"game" : "tictactoe", "id" : "toto"},
-        #"tata" : {"game" : "tictactoe", "id" : "tata"},
-        }
 
     def on_open(self, data):
         self.emit('get_sessions',
-                  sessions=session.SESSION_BROKER.getSessions())
+                  sessions=SESSION_BROKER.getSessions())
 
-    def join(self):
-        pass
+    @tornadio2.event
+    def join_game(self, player_id, session_id):
+        session = SESSION_BROKER.get_session(session_id)
+        session.add_player(player_id)
+
+    @tornadio2.event
+    def create_game(self, player_id, game_name):
+        session = SESSION_BROKER.create_session(game_name)
+        session.add_player(player_id)

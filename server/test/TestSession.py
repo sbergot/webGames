@@ -29,7 +29,12 @@ class TestSession(unittest.TestCase):
     def test_should_be_initially_empty(self):
         self.assertEqual(self.session.players, {})
 
+    def test_should_allow_to_add_a_player(self):
+        self.session.add_player("tata")
+        self.assertIn("tata", self.session.players)
+
     def test_should_receive_connection_of_players(self):
+        self.session.add_player("tata")
         self.session.connect(mock.Mock(), "tata")
         self.assertEqual(
             len(self.session.players['tata'].connections),
@@ -37,25 +42,25 @@ class TestSession(unittest.TestCase):
 
     def test_should_allow_to_push_data_to_a_player(self):
         conn = mock.Mock()
+        self.session.add_player("tata")
         self.session.connect(conn, "tata")
         self.session.emit("event", {"toto" : "titi"}, "tata")
         conn.emit.assert_called_with("event", {"toto" : "titi"})
 
     def test_should_allow_to_broadcast_data_to_all_players(self):
         conn_tata = mock.Mock()
+        self.session.add_player("tata")
         self.session.connect(conn_tata, "tata")
         conn_robert = mock.Mock()
+        self.session.add_player("robert")
         self.session.connect(conn_robert, "robert")
         self.session.broadcast("event", {"key" : "value"})
         conn_tata.emit.assert_called_with("event", {"key" : "value"})
         conn_robert.emit.assert_called_with("event", {"key" : "value"})
         
     def test_should_allow_player_to_get_a_symbol(self):
-        self.session.connect(mock.Mock(), "tata")
-        self.session.connect(mock.Mock(), "titi")
-        self.assertEqual(
-            self.session.get_symbol("tata"),
-            "fake symbol 3")
+        self.session.add_player("tata")
+        self.session.add_player("titi")
         self.assertEqual(
             self.session.get_symbol("tata"),
             "fake symbol 3")
@@ -65,14 +70,15 @@ class TestSession(unittest.TestCase):
 
     def test_should_provide_a_status_of_the_game(self):
         conn_tata = mock.Mock()
+        self.session.add_player("tata")
         self.session.connect(conn_tata, "tata")
         self.assertEqual(
             self.session.get_status("tata"),
             "status for fake symbol 3")
 
     def test_should_provide_the_list_of_players(self):
-        self.session.connect(mock.Mock(), "tata")
-        self.session.connect(mock.Mock(), "titi")
+        self.session.add_player("tata")
+        self.session.add_player("titi")
 
         def toDict(aList):
             return {elt["id"] : elt for elt in aList}
@@ -83,8 +89,8 @@ class TestSession(unittest.TestCase):
                     {"id" : "titi", "symbol" : "fake symbol 2"}]))
 
     def test_should_provide_a_structured_description_for_the_lobby(self):
-        self.session.connect(mock.Mock(), "tata")
-        self.session.connect(mock.Mock(), "titi")
+        self.session.add_player("tata")
+        self.session.add_player("titi")
         self.assertEqual(
             self.session.get_description(),
             {"name" : "my model",

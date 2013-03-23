@@ -7,13 +7,10 @@ class Session:
         self.players = {}
         self.model = model(self)
 
-    def addPlayer(self, id, instance):
-        self.players[id] = instance
-        self.players[id].symbol = self.model.pop_symbol()
+    def add_player(self, id):
+        self.players[id] = player.Player(self.model.pop_symbol())
 
     def connect(self, conn, player_id):
-        if player_id not in self.players:
-            self.addPlayer(player_id, player.Player())
         self.players[player_id].connect(conn)
 
     def emit(self, event, data, player_id):

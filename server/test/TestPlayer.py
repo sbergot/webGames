@@ -6,7 +6,7 @@ class TestPlayer(unittest.TestCase):
 
     def setUp(self):
         self.connections = [mock.Mock() for _ in range(10)]
-        self.player = player.Player()
+        self.player = player.Player("my symbol")
         [self.player.connect(conn) for conn in self.connections]
     
     def test_should_allow_to_push_to_all_connections_of_a_player(self):

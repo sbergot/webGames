@@ -58,16 +58,24 @@ function MainCtrl($scope, $cookies, socket, guid) {
     $scope.player_name = "toto";
     $scope.player_id = $cookies.player_id;
     $scope.new_id = function new_id() {$scope.player_id = guid();};
+    $scope.games = ["tictactoe"];
 }
 
 function LobbyCtrl($scope, socket) {
     var conn = socket.connect('lobby');
     conn.on('get_sessions', function(data) {$scope.sessions = data.sessions;});
-    $scope.join = function(session_id) {
-	conn.emit('join', {
-	    player : $scope.player_id,
+    $scope.join_game = function(session_id) {
+	$scope.session_id = session_id;
+	conn.emit('join_game', {
+	    player_id : $scope.player_id,
 	    session_id : session_id
 	});
+    };
+    $scope.create_game = function(game_name) {
+	conn.emit('create_game', {
+	    player_id : $scope.player_id,
+	    game_name : game_name
+	})
     };
 }
 

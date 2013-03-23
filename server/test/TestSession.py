@@ -5,6 +5,8 @@ import game
 import player
 
 class MyModel(game.Game):
+    name = "my model"
+    slot_nbr = 3
 
     def __init__(self, model_factory):
         self.symbols = [
@@ -61,12 +63,34 @@ class TestSession(unittest.TestCase):
             self.session.get_symbol("titi"),
             "fake symbol 2")
 
-    def test_should_provide_a_status(self):
+    def test_should_provide_a_status_of_the_game(self):
         conn_tata = mock.Mock()
         self.session.connect(conn_tata, "tata")
         self.assertEqual(
             self.session.get_status("tata"),
             "status for fake symbol 3")
+
+    def test_should_provide_the_list_of_players(self):
+        self.session.connect(mock.Mock(), "tata")
+        self.session.connect(mock.Mock(), "titi")
+
+        def toDict(aList):
+            return {elt["id"] : elt for elt in aList}
+
+        self.assertEqual(
+            toDict(self.session.get_players()),
+            toDict([{"id" : "tata", "symbol" : "fake symbol 3"},
+                    {"id" : "titi", "symbol" : "fake symbol 2"}]))
+
+    def test_should_provide_a_structured_description_for_the_lobby(self):
+        self.session.connect(mock.Mock(), "tata")
+        self.session.connect(mock.Mock(), "titi")
+        self.assertEqual(
+            self.session.get_description(),
+            {"name" : "my model",
+             "players" : 2,
+             "slots" : 3})
+
 
 class TestSessionBroker(unittest.TestCase):
 
@@ -75,23 +99,25 @@ class TestSessionBroker(unittest.TestCase):
         self.session_broker.registerGame('my-game', MyModel)
 
     def test_should_allow_to_create_a_session(self):
-        self.session_broker.get_session('my-game', 'toto')
+        self.session_broker.create_session('my-game')
 
     def test_should_create_a_session_with_a_model(self):
-        session = self.session_broker.get_session('my-game', 'toto')
+        session = self.session_broker.create_session('my-game')
         self.assertIsInstance(session.model, MyModel)
 
-    def test_should_return_an_existing_session_if_possible(self):
-        session1 = self.session_broker.get_session('my-game', 'toto')
-        session2 = self.session_broker.get_session('my-game', 'toto')
-        self.assertIs(session1, session2)
+    def test_should_get_a_session_by_its_id(self):
+        session = self.session_broker.create_session('my-game')
+        id = self.session_broker.sessions.keys()[0] # the only one
+        self.assertIs(session, self.session_broker.get_session(id))
 
     def test_should_provide_the_list_of_session(self):
-        sessions = {
-            "toto" : {"game" : "my-game", "id" : "toto"},
-            "tata" : {"game" : "my-game", "id" : "tata"},
-            }
-        self.session_broker.get_session('my-game', 'toto')
-        self.session_broker.get_session('my-game', 'tata')
-        self.assertEqual(self.session_broker.getSessions(), sessions)
+        self.session_broker.create_session('my-game')
+        self.session_broker.create_session('my-game')
+        sessions = self.session_broker.getSessions()
+        self.assertEqual(len(sessions.values()), 2)
+        self.assertEqual(
+            sessions.values()[0],
+            {"players" : 0,
+             "slots" : 3,
+             "name" : "my model"})
 

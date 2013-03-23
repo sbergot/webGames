@@ -1,4 +1,5 @@
 import player
+import uuid
 
 class Session:
 
@@ -29,29 +30,44 @@ class Session:
         symbol = self.get_symbol(player_id)
         return self.model.get_status(symbol)
 
+    def get_players(self):
+        return [
+            {"id" : id, "symbol" : player.symbol}
+            for id, player in self.players.items()]
+
+    def get_description(self):
+        players = self.get_players()
+        return {
+            "name" : self.model.name,
+            "players" : len(players),
+            "slots" : self.model.slot_nbr}
+
 class SessionBroker:
+    """
+    Stores the game session to show them in the lobby.
+    Also stores the model constructors to create sessions.
+    """
 
     def __init__(self):
         self.games = {}
         self.sessions = {}
 
-    def get_session(self, game, id):
-        if id not in self.sessions[game]:
-            self.spawnSession(game, id)
-        return self.sessions[game][id]
+    def get_session(self, id):
+        return self.sessions[id]
 
-    def spawnSession(self, game, id):
-        self.sessions[game][id] = Session(self.games[game])
+    def create_session(self, game):
+        id = str(uuid.uuid4())
+        session = Session(self.games[game])
+        self.sessions[id] = session
+        return session
 
     def registerGame(self, name, constructor):
         self.games[name] = constructor
-        self.sessions[name] = {}
 
     def getSessions(self):
         res = {}
-        for name in self.sessions:
-            for id in self.sessions[name]:
-                res[id] = {"game" : name, "id" : id}
+        for id in self.sessions:
+            res[id] = self.sessions[id].get_description()
         return res
 
 SESSION_BROKER = SessionBroker()

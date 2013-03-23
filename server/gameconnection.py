@@ -10,9 +10,19 @@ class GameConnection(tornadio2.conn.SocketConnection):
 
     @tornadio2.event
     def register(self, player_name, player_id, session_id):
+        if not session_id:
+            session_id = str(uuid.uuid4())
         self.game_session = \
             SESSION_BROKER.get_session("tictactoe", session_id)
         self.game_session.connect(self, player_id)
-        self.emit('get-session-id', id=str(uuid.uuid4()))
-        self.emit('get-symbol',
+
+        self.player_id = player_id
+
+        self.emit_player('get-session-id', id=session_id)
+        self.emit_player('get-symbol',
                   symbol=self.game_session.get_symbol(player_id))
+        self.emit_player('get-status',
+                  status=self.game_session.get_status(player_id))
+
+    def emit_player(self, name, **data):
+        self.game_session.emit(name, data, self.player_id)

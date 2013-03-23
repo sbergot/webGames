@@ -16,6 +16,9 @@ class MyModel(game.Game):
     def pop_symbol(self):
         return self.symbols.pop()
 
+    def get_status(self, symbol):
+        return "status for {}".format(symbol)
+
 class TestSession(unittest.TestCase):
 
     def setUp(self):
@@ -57,6 +60,13 @@ class TestSession(unittest.TestCase):
         self.assertEqual(
             self.session.get_symbol("titi"),
             "fake symbol 2")
+
+    def test_should_provide_a_status(self):
+        conn_tata = mock.Mock()
+        self.session.connect(conn_tata, "tata")
+        self.assertEqual(
+            self.session.get_status("tata"),
+            "status for fake symbol 3")
 
 class TestSessionBroker(unittest.TestCase):
 

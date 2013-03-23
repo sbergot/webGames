@@ -9,7 +9,7 @@ class TicTacToeConnection(GameConnection):
     def play(self, box, symbol, fullGrid):
         result = self.game_session.model.play(box, symbol)
         if result["type"] == "error":
-            self.emit('play', **result)
+            self.emit_player('play', **result)
         else:
             self.broadcast('play', **result)
 

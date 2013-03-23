@@ -8,6 +8,7 @@ class Session:
 
     def addPlayer(self, id, instance):
         self.players[id] = instance
+        self.players[id].symbol = self.model.pop_symbol()
 
     def connect(self, conn, player_id):
         if player_id not in self.players:
@@ -22,10 +23,11 @@ class Session:
             player.emit(event, data)
 
     def get_symbol(self, player_id):
-        player = self.players[player_id]
-        if player.symbol is None:
-            player.symbol = self.model.pop_symbol()
-        return player.symbol
+        return self.players[player_id].symbol
+
+    def get_status(self, player_id):
+        symbol = self.get_symbol(player_id)
+        return self.model.get_status(symbol)
 
 class SessionBroker:
 

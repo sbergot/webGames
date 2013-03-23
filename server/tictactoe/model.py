@@ -79,6 +79,9 @@ class TicTacToe(game.Game):
     def pop_symbol(self):
         return self.symbols.pop()
 
+    def get_status(self, symbol):
+        return self.grid.check_status()
+
     def switch_player(self):
         self.current = "x" if self.current == "o" else "o"
 

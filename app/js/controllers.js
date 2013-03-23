@@ -2,6 +2,22 @@
 
 /* Controllers */
 
+function ConnectionConfig($scope, conn) {
+    conn.on('connect', function() {
+	$scope.status = "connected";
+    });
+    conn.on('get-symbol', function(data) {
+	$scope.symbol = data.symbol;
+    });
+    conn.on('get-session-id', function(data) {
+	$scope.session_id = data.id;
+    });
+    conn.emit('register', {
+	player_name : $scope.player_name,
+	player_id : $scope.player_id,
+	session_id : $scope.session_id
+    });
+}
 
 function TictactoeCtrl($scope, socket, $routeParams) {
     $scope.status = "not connected";
@@ -18,6 +34,7 @@ function TictactoeCtrl($scope, socket, $routeParams) {
 	 {coord : "33", value : ""}]
     ];
     var conn = socket.connect('tictactoe');
+    ConnectionConfig($scope, conn);
     $scope.play = function(cell) {
 	var x = parseInt(cell[0]) - 1;
 	var y = parseInt(cell[1]) - 1;
@@ -28,35 +45,18 @@ function TictactoeCtrl($scope, socket, $routeParams) {
 	    fullGrid : $scope.grid
 	});
     };
-    conn.on('connect', function() {
-	$scope.status = "connected";
-    });
-    conn.on('get-symbol', function(data) {
-	$scope.symbol = data.symbol;
-    });
-    conn.on('get-session-id', function(data) {
-	$scope.session_id = data.id;
-    });
     conn.on('play', function(data) {
         $scope.status = data.status;
         $scope.grid = data.grid;
     });
-    conn.emit('register', {
-	player_name : $scope.player_name,
-	player_id : $scope.player_id,
-	session_id : $scope.session_id
-    });
 }
 
 function MainCtrl($scope, $cookies, socket, guid) {
-    
     if ($cookies.player_id === undefined) {
 	$cookies.player_id = guid();
     }
     $scope.player_name = "toto";
     $scope.player_id = $cookies.player_id;
-    $scope.session_id = "";
-
     $scope.new_id = function new_id() {$scope.player_id = guid();};
 }
 
@@ -64,7 +64,6 @@ function LobbyCtrl($scope, socket) {
     var conn = socket.connect('lobby');
     conn.on('get_sessions', function(data) {$scope.sessions = data.sessions;});
     $scope.join = function(session_id) {
-	$scope.session_id = session_id;
 	conn.emit('join', {
 	    player : $scope.player_id,
 	    session_id : session_id

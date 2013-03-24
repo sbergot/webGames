@@ -108,13 +108,13 @@ class TestSessionBroker(unittest.TestCase):
         self.session_broker.create_session('my-game')
 
     def test_should_create_a_session_with_a_model(self):
-        session = self.session_broker.create_session('my-game')
+        id = self.session_broker.create_session('my-game')
+        session = self.session_broker.get_session(id)
         self.assertIsInstance(session.model, MyModel)
 
     def test_should_get_a_session_by_its_id(self):
-        session = self.session_broker.create_session('my-game')
-        id = self.session_broker.sessions.keys()[0] # the only one
-        self.assertIs(session, self.session_broker.get_session(id))
+        id = self.session_broker.create_session('my-game')
+        session = self.session_broker.get_session(id)
 
     def test_should_provide_the_list_of_session(self):
         self.session_broker.create_session('my-game')

@@ -69,6 +69,8 @@ class Grid:
         self.box(box)["value"] = symbol
 
 class TicTacToe(game.Game):
+    name = "tictactoe"
+    slot_nbr = 3
 
     def __init__(self, session):
         game.Game.__init__(self, session)

@@ -15,5 +15,7 @@ class LobbyConnection(tornadio2.conn.SocketConnection):
 
     @tornadio2.event
     def create_game(self, player_id, game_name):
-        session = SESSION_BROKER.create_session(game_name)
+        id = SESSION_BROKER.create_session(game_name)
+        session = SESSION_BROKER.get_session(id)
         session.add_player(player_id)
+        self.emit("get-session-id", {"id" : id})

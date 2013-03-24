@@ -12,10 +12,7 @@ class GameConnection(tornadio2.conn.SocketConnection):
         self.game_session = \
             SESSION_BROKER.get_session(session_id)
         self.game_session.connect(self, player_id)
-
         self.player_id = player_id
-
-        self.emit_player('get-session-id', id=session_id)
         self.emit_player(
             'get-symbol',
             symbol=self.game_session.get_symbol(player_id))

@@ -56,7 +56,7 @@ class SessionBroker:
         id = str(uuid.uuid4())
         session = Session(self.games[game])
         self.sessions[id] = session
-        return session
+        return id
 
     def registerGame(self, name, constructor):
         self.games[name] = constructor

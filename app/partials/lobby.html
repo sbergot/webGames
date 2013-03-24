@@ -1,17 +1,19 @@
-<ol id="games">
-  <li ng-repeat="game in games">
-    <a href="#/{{game}}"
-       ngClick=create_game(game)>
-      {{game}}
-    </a>
-  </li>
-</ol>
+<div id="games">
+  Create a new game:
+  <ol>
+    <li ng-repeat="game in games"
+	ng-click="create_game(game)">
+        {{game}}
+    </li>
+  </ol>
+</div>
 
-<ol id="game_sessions">
-  <li ng-repeat="session in sessions">
-    <a href="#/{{session.game}}"
-       ngClick=join_game(session.id)>
-      {{session.game}} - {{session.id}}
-    </a>
-  </li>
-<ol>
+<div id="game_sessions">
+  Join a game:
+  <ol>
+    <li ng-repeat="session in sessions"
+        ng-click="join_game(session)">
+        {{session.game}} - {{session.id}}
+    </li>
+  <ol>
+</div>

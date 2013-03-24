@@ -15,6 +15,9 @@ html, body {
     display : inline;
     cursor : pointer;
 }
+
+/* main page layout */
+
 #header
 {
     background-color : red;
@@ -40,4 +43,28 @@ html, body {
     height : 50px;
     background-color : red;
     width : 100%;
+}
+
+/* lobby layout */
+
+#games
+{
+    position : absolute;
+    top : 0px;
+    width : 200px;
+}
+
+#games li
+{
+    cursor : pointer;
+}
+
+#game_sessions
+{
+    margin-left : 200px;
+}
+
+#game_sessions li
+{
+    cursor : pointer;
 }

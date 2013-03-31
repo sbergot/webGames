@@ -28,9 +28,9 @@ html, body {
 }
 #main
 {
-    position : absolute;
-    top : 50px;
+    position : relative; 
     margin : 0px;
+    height : 90%;
 }
 #main > p
 {
@@ -51,20 +51,53 @@ html, body {
 {
     position : absolute;
     top : 0px;
-    width : 200px;
+    width : 170px;
+    background-color : #FFFFFF;
+    height : 95%;
+    padding-left : 5px;
+}
+
+#main h1
+{
+    font-size : 16px;
+}
+
+#games ol
+{
+    list-style-type : none;
+    padding-left : 0px;
 }
 
 #games li
 {
     cursor : pointer;
+    border : 1px solid black;
+    background-color : #a0a0a0;
+    padding-left : 10px;
+    margin-top : 3px;
+    margin-right : 3px;
 }
 
 #game_sessions
 {
-    margin-left : 200px;
+    position : absolute;
+    top : 0px;
+    left : 170px;
+    margin-left : 20px;
+}
+
+#game_sessions ol
+{
+    list-style-type : none;
+    padding-left : 0px;
 }
 
 #game_sessions li
 {
     cursor : pointer;
+    border : 1px solid black;
+    background-color : #a0a0a0;
+    padding-left : 10px;
+    margin-top : 3px;
+    margin-right : 3px;
 }

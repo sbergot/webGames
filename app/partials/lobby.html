@@ -1,5 +1,5 @@
-<div id="games">
-  Create a new game:
+<div id="games" class="lobby-section">
+  <h1>Create a new game:</h1>
   <ol>
     <li ng-repeat="game in games"
 	ng-click="create_game(game)">
@@ -8,8 +8,8 @@
   </ol>
 </div>
 
-<div id="game_sessions">
-  Join a game:
+<div id="game_sessions" class="lobby-section">
+  <h1>Join a game:</h1>
   <ol>
     <li ng-repeat="(id, session) in sessions"
         ng-click="join_game(id)">

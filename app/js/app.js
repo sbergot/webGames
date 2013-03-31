@@ -10,7 +10,7 @@ angular.module('webGames', ['socket', 'infos', 'ngCookies']).
 	}
     );
     $routeProvider.when(
-	'/tictactoe',
+	'/tictactoe/session/:sessionId',
 	{
 	    templateUrl: 'partials/tictactoe.html',
 	    controller: TictactoeCtrl

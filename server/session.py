@@ -61,7 +61,7 @@ class SessionBroker:
     def registerGame(self, name, constructor):
         self.games[name] = constructor
 
-    def getSessions(self):
+    def get_sessions(self):
         res = {}
         for id in self.sessions:
             res[id] = self.sessions[id].get_description()

@@ -7,11 +7,7 @@
 </head>
 <body>
   <div id="header">
-    <ul class="menu">
-      <li><a href="#/tictactoe">tictactoe</a></li>
-      <li ng-click="new_id()">new id</li>
-    </ul>
-    <span>welcome {{playerName}} id: {{player_id}}</span>
+    <span ng-click="new_id()">welcome {{playerName}} id: {{player_id}}</span>
   </div>
 
   <div id="main" ng-view></div>

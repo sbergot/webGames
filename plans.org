@@ -22,15 +22,17 @@
 ** website
 *** TODO add game session
 **** upper bar
-***** TODO allow to change id
+***** DONE allow to change id
 ***** TODO allow to change name
 **** lobby
 ***** DONE should a list of games waiting for player
-***** TODO should allow to create a game
-***** TODO should allow to join a game
+***** DONE should allow to create a game
+**** DONE should allow to join a game
+**** TODO if game is full, refuse the connection
 **** game screen
 ***** DONE game status should be fetched when connecting to a game
 ***** TODO a list of slot with status should be displayed
+***** TODO when disconnecting, kill the game and remove it from the list
 ***** TODO on free player slot: add computer button
 *** add menu items
 **** lobby

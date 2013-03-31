@@ -11,9 +11,9 @@
 <div id="game_sessions">
   Join a game:
   <ol>
-    <li ng-repeat="session in sessions"
-        ng-click="join_game(session)">
-        {{session.game}} - {{session.id}}
+    <li ng-repeat="(id, session) in sessions"
+        ng-click="join_game(id)">
+        {{session.name}} - {{id}}
     </li>
   <ol>
 </div>

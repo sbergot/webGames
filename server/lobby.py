@@ -6,16 +6,26 @@ class LobbyConnection(tornadio2.conn.SocketConnection):
 
     def on_open(self, data):
         self.emit('get_sessions',
-                  sessions=SESSION_BROKER.getSessions())
+                  sessions=SESSION_BROKER.get_sessions())
 
     @tornadio2.event
     def join_game(self, player_id, session_id):
-        session = SESSION_BROKER.get_session(session_id)
+        try:
+            session = SESSION_BROKER.get_session(session_id)
+        except KeyError:
+            self.emit("notify", {"message" : "session not found"})
+            return
         session.add_player(player_id)
+        game_name = session.get_description()["name"]
+        self.emit("get-session-access",
+                  {"id" : session_id,
+                   "name" : game_name})
 
     @tornadio2.event
     def create_game(self, player_id, game_name):
-        id = SESSION_BROKER.create_session(game_name)
-        session = SESSION_BROKER.get_session(id)
+        session_id = SESSION_BROKER.create_session(game_name)
+        session = SESSION_BROKER.get_session(session_id)
         session.add_player(player_id)
-        self.emit("get-session-id", {"id" : id})
+        self.emit("get-session-access",
+                  {"id" : session_id,
+                   "name" : game_name})

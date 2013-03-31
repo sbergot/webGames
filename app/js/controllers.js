@@ -2,20 +2,17 @@
 
 /* Controllers */
 
-function ConnectionConfig($scope, conn) {
+function ConnectionConfig($scope, conn, session_id) {
     conn.on('connect', function() {
         $scope.status = "connected";
     });
     conn.on('get-symbol', function(data) {
         $scope.symbol = data.symbol;
     });
-    conn.on('get-session-id', function(data) {
-        $scope.session_id = data.id;
-    });
     conn.emit('checkin', {
         player_name : $scope.player_name,
         player_id : $scope.player_id,
-        session_id : $scope.session_id
+        session_id : session_id
     });
 }
 
@@ -34,7 +31,7 @@ function TictactoeCtrl($scope, socket, $routeParams) {
          {coord : "33", value : ""}]
     ];
     var conn = socket.connect('tictactoe');
-    ConnectionConfig($scope, conn);
+    ConnectionConfig($scope, conn, $routeParams.sessionId);
     $scope.play = function(cell) {
         var x = parseInt(cell[0]) - 1;
         var y = parseInt(cell[1]) - 1;
@@ -59,25 +56,21 @@ function MainCtrl($scope, $cookies, socket, guid) {
     $scope.player_id = $cookies.player_id;
     $scope.new_id = function new_id() {$scope.player_id = guid();};
     $scope.games = ["tictactoe"];
-    $scope.session_id = null;
 }
 
 function LobbyCtrl($scope, $location, socket) {
     var conn = socket.connect('lobby');
     conn.on('get_sessions', function(data) {$scope.sessions = data.sessions;});
-    $scope.join_game = function(session) {
-        $scope.session_id = session.id;
+    conn.on('get-session-access', function(data) {
+        $location.path('/' + data.name + '/session/' + data.id);
+    });
+    $scope.join_game = function(session_id) {
         conn.emit('join_game', {
             player_id : $scope.player_id,
-            session_id : session.id
+            session_id : session_id
         });
-	$location.path('/' + session.game)
     };
     $scope.create_game = function(game_name) {
-        conn.on('get-session-id', function(data) {
-            $scope.session_id = data.id;
-	    $location.path('/' + game_name)
-        });
         conn.emit('create_game', {
             player_id : $scope.player_id,
             game_name : game_name

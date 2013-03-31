@@ -1,5 +1,20 @@
 <link rel="stylesheet" href="css/tic.css"/>
 
+<div id="players">
+  <h1>Players</h1>
+  <ol> 
+    <li ng-repeat="player in players" class="button">
+      <span ng-show="player.occupied">
+        id : {{player.id}}
+        symbol : {{player.symbol}}
+      </span>
+      <span ng-hide="player.occupied">
+        unoccupied
+      </span>
+    </li>
+  </ol>
+</div>
+
 <div id="board">
 
   <table>
@@ -11,19 +26,10 @@
   </table>
   <div>Player symbol: {{symbol}}</div>
   <div>game status: {{status}}</div>
-  <p>reset</p>
-  <p ng-click="quit()">quit</p>
+  <ul id="buttons">
+    <li class="button">reset</li>
+    <li class="button" ng-click="quit()">quit</li>
+  </ul>
 
 </div>
 
-<ol id="players">
-  <li ng-repeat="player in players">
-    <span ng-show="player.occupied">
-      id : {{player.id}}
-      symbol : {{player.symbol}}
-    </span>
-    <span ng-hide="player.occupied">
-      unoccupied
-    </span>
-  </li>
-</ol>

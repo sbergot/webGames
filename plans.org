@@ -21,19 +21,23 @@
 **** state
 ** website
 *** TODO add game session
+**** notifications
+     area located in the lower right corner of the main zone
+***** TODO the server can push notifications
+***** TODO the notifications stack vertically
+***** TODO the notifications fade out after a few seconds
 **** upper bar
 ***** DONE allow to change id
-***** TODO allow to change name
+***** DONE allow to change name
 **** lobby
 ***** DONE should a list of games waiting for player
 ***** DONE should allow to create a game
-**** DONE should allow to join a game
-**** TODO if game is full, refuse the connection
+***** DONE should allow to join a game
+***** TODO if game is full, refuse the connection
 **** game screen
 ***** DONE game status should be fetched when connecting to a game
-***** TODO a list of slot with status should be displayed
-***** TODO when disconnecting, kill the game and remove it from the list
-***** TODO on free player slot: add computer button
+***** DONE a list of slot with status should be displayed
+***** DONE when disconnecting, kill the game and remove it from the list
 *** add menu items
 **** lobby
      show session for a given game

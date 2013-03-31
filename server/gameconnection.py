@@ -7,7 +7,7 @@ class GameConnection(tornadio2.conn.SocketConnection):
     def broadcast(self, event, **kwargs):
         self.game_session.broadcast(event, kwargs)
 
-    def register_session(self, player_id, session_id):
+    def register_session(self, player_id, session_id, player_name):
         self.game_session = \
             SESSION_BROKER.get_session(session_id)
         self.game_session.connect(self, player_id)
@@ -23,7 +23,7 @@ class GameConnection(tornadio2.conn.SocketConnection):
 
     @tornadio2.event
     def checkin(self, player_name, player_id, session_id):
-        self.register_session(player_id, session_id)
+        self.register_session(player_id, session_id, player_name)
         self.emit_player(
             'get-symbol',
             symbol=self.game_session.get_symbol(player_id))

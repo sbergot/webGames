@@ -20,7 +20,7 @@ class TestSessionBroker(unittest.TestCase):
     def test_should_remove_a_session_if_its_not_alive_anymore(self):
         id = self.session_broker.create_session('my-game')
         session = self.session_broker.get_session(id)
-        session.add_player("tata")
+        session.add_player("tata", "toto")
         self.session_broker.kill_if_dead(id)
         self.assertIn(id, self.session_broker.sessions)
         session.remove("tata")

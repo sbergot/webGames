@@ -7,13 +7,25 @@
 </head>
 <body>
   <div id="header">
-    <span ng-click="new_id()">welcome {{playerName}} id: {{player_id}}</span>
+    <form>
+      Name:
+      <input ng-model="player_name">
+      </input>
+    </form>
+    <span class="button"
+	  ng-click="save_name()">
+      save name
+    </span>
+    <span class="button"
+	  ng-click="new_id()">
+      new id
+    </span>
   </div>
 
   <div id="main" ng-view></div>
 
   <div id="footer" ng-controller="footerCtlr">
-    <div>Angular seed app: v{{version}}</div>
+    <div>WebGames v{{version}}</div>
   </div>
 
   <!-- In production use:

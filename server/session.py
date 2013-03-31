@@ -11,8 +11,8 @@ class Session:
         self.players = {}
         self.model = model(self)
 
-    def add_player(self, id):
-        self.players[id] = Player(self.model.pop_symbol())
+    def add_player(self, id, name):
+        self.players[id] = Player(name, self.model.pop_symbol())
 
     def remove(self, id):
         del self.players[id]
@@ -44,18 +44,14 @@ class Session:
         return self.model.get_status(symbol)
 
     def get_players(self):
-        return [{"id" : id,
-                 "symbol" : player.symbol,
-                 "occupied" : True}
-                for id, player in self.players.items()]
+        return [player.get_description()
+                for player in self.players.values()]
 
     def get_slot_status(self):
         players = self.get_players()
         unoccupied = max(self.model.slot_nbr - len(players), 0)
         for _ in range(unoccupied):
-            players.append({"occupied" : False,
-                            "symbol" : None,
-                            "id" : None})
+            players.append(Player.empty())
         return players
 
     def get_description(self):

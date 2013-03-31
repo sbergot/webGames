@@ -5,7 +5,7 @@ import player
 class TestPlayer(unittest.TestCase):
 
     def setUp(self):
-        self.player = player.Player("my symbol")
+        self.player = player.Player("my name", "my symbol")
 
     def test_should_allow_to_add_a_connection(self):
         connection = mock.Mock()

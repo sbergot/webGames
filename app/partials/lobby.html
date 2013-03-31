@@ -2,7 +2,8 @@
   <h1>Create a new game:</h1>
   <ol>
     <li ng-repeat="game in games"
-	ng-click="create_game(game)">
+	ng-click="create_game(game)"
+	class="button">
         {{game}}
     </li>
   </ol>
@@ -12,7 +13,8 @@
   <h1>Join a game:</h1>
   <ol>
     <li ng-repeat="(id, session) in sessions"
-        ng-click="join_game(id)">
+        ng-click="join_game(id)"
+	class="button">
         {{session.name}} - {{id}}
     </li>
   <ol>

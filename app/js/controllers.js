@@ -56,10 +56,20 @@ function TictactoeCtrl($scope, socket, $routeParams, $location) {
 }
 
 function MainCtrl($scope, $cookies, socket, guid) {
-    if ($cookies.player_id === undefined) {
-    $cookies.player_id = guid();
+    function new_name() {
+	return "toto du " + Math.floor(Math.random()*101);
     }
-    $scope.player_name = "toto";
+    if (!$cookies.player_id) {
+	$cookies.player_id = guid();
+    }
+    if ($cookies.player_name) {
+	$scope.player_name = $cookies.player_name;
+    } else {
+	$scope.player_name = new_name();
+    }
+    $scope.save_name = function() {
+	$cookies.player_name = $scope.player_name;
+    };
     $scope.player_id = $cookies.player_id;
     $scope.new_id = function new_id() {$scope.player_id = guid();};
     $scope.games = ["tictactoe"];
@@ -74,13 +84,15 @@ function LobbyCtrl($scope, $location, socket) {
     $scope.join_game = function(session_id) {
         conn.emit('join_game', {
             player_id : $scope.player_id,
-            session_id : session_id
+            session_id : session_id,
+	    player_name : $scope.player_name
         });
     };
     $scope.create_game = function(game_name) {
         conn.emit('create_game', {
             player_id : $scope.player_id,
-            game_name : game_name
+            game_name : game_name,
+	    player_name : $scope.player_name
         });
     };
 }

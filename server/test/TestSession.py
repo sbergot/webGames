@@ -99,8 +99,31 @@ class TestSession(unittest.TestCase):
 
         self.assertEqual(
             toDict(self.session.get_players()),
-            toDict([{"id" : "tata", "symbol" : "fake symbol 3"},
-                    {"id" : "titi", "symbol" : "fake symbol 2"}]))
+            toDict([{"occupied" : True,
+                     "id" : "tata",
+                     "symbol" : "fake symbol 3"},
+                    {"occupied" : True,
+                     "id" : "titi",
+                     "symbol" : "fake symbol 2"}]))
+
+    def test_should_provide_the_slot_status(self):
+        self.session.add_player("tata")
+        self.session.add_player("titi")
+
+        def toDict(aList):
+            return {elt["id"] : elt for elt in aList}
+
+        self.assertEqual(
+            toDict(self.session.get_slot_status()),
+            toDict([{"occupied" : True,
+                     "id" : "tata",
+                     "symbol" : "fake symbol 3"},
+                    {"occupied" : True,
+                     "id" : "titi",
+                     "symbol" : "fake symbol 2"},
+                    {"occupied" : False,
+                     "id" : None,
+                     "symbol" : None}]))
 
     def test_should_provide_a_structured_description_for_the_lobby(self):
         self.session.add_player("tata")

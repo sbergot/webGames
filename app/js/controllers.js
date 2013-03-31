@@ -9,6 +9,9 @@ function ConnectionConfig($scope, conn, session_id) {
     conn.on('get-symbol', function(data) {
         $scope.symbol = data.symbol;
     });
+    conn.on('get-player-list', function(data) {
+        $scope.players = data.players;
+    });
     conn.emit('checkin', {
         player_name : $scope.player_name,
         player_id : $scope.player_id,
@@ -16,7 +19,7 @@ function ConnectionConfig($scope, conn, session_id) {
     });
 }
 
-function TictactoeCtrl($scope, socket, $routeParams) {
+function TictactoeCtrl($scope, socket, $routeParams, $location) {
     $scope.status = "not connected";
     $scope.symbol = "unknown";
     $scope.grid = [
@@ -41,6 +44,10 @@ function TictactoeCtrl($scope, socket, $routeParams) {
             symbol : $scope.symbol,
             fullGrid : $scope.grid
         });
+    };
+    $scope.quit = function() {
+	conn.emit("quit");
+	$location.path("/lobby");
     };
     conn.on('play', function(data) {
         $scope.status = data.status;

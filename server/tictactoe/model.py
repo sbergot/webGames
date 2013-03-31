@@ -70,7 +70,7 @@ class Grid:
 
 class TicTacToe(game.Game):
     name = "tictactoe"
-    slot_nbr = 3
+    slot_nbr = 2
 
     def __init__(self, session):
         game.Game.__init__(self, session)

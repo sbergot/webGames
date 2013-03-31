@@ -44,14 +44,22 @@ class Session:
         return self.model.get_status(symbol)
 
     def get_players(self):
-        return [
-            {"id" : id, "symbol" : player.symbol}
-            for id, player in self.players.items()]
+        return [{"id" : id,
+                 "symbol" : player.symbol,
+                 "occupied" : True}
+                for id, player in self.players.items()]
+
+    def get_slot_status(self):
+        players = self.get_players()
+        unoccupied = max(self.model.slot_nbr - len(players), 0)
+        for _ in range(unoccupied):
+            players.append({"occupied" : False,
+                            "symbol" : None,
+                            "id" : None})
+        return players
 
     def get_description(self):
-        players = self.get_players()
-        return {
-            "name" : self.model.name,
-            "players" : len(players),
-            "slots" : self.model.slot_nbr}
+        return {"name" : self.model.name,
+                "players" : len(self.get_players()),
+                "slots" : self.model.slot_nbr}
 

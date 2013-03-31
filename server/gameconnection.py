@@ -12,9 +12,14 @@ class GameConnection(tornadio2.conn.SocketConnection):
             SESSION_BROKER.get_session(session_id)
         self.game_session.connect(self, player_id)
         self.player_id = player_id
+        self.session_id = session_id
 
     def unregister(self):
-        self.game_session.disconnect(self, player_id)
+        self.game_session.disconnect(self, self.player_id)
+
+    def broadcast_player_list(self):
+        self.broadcast('get-player-list',
+                       players = self.game_session.get_slot_status())
 
     @tornadio2.event
     def checkin(self, player_name, player_id, session_id):
@@ -25,9 +30,18 @@ class GameConnection(tornadio2.conn.SocketConnection):
         self.emit_player(
             'get-status',
             status=self.game_session.get_status(player_id))
+        self.broadcast_player_list()
 
+    @tornadio2.event
+    def quit(self, dummy):
+        self.game_session.remove(self.player_id)
+        self.broadcast_player_list()
+        SESSION_BROKER.kill_if_dead(self.session_id)
+        self.close()
+    
     def emit_player(self, name, **data):
         self.game_session.emit(name, data, self.player_id)
 
     def on_close(self):
+        self.unregister()
         super(GameConnection, self).on_close()

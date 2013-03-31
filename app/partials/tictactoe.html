@@ -5,8 +5,7 @@
   <ol> 
     <li ng-repeat="player in players" class="button">
       <span ng-show="player.occupied">
-        id : {{player.id}}
-        symbol : {{player.symbol}}
+        {{player.name}} : {{player.symbol}}
       </span>
       <span ng-hide="player.occupied">
         unoccupied

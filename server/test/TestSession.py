@@ -1,25 +1,7 @@
 import unittest
 import mock
 import session
-import game
-import player
-
-class MyModel(game.Game):
-    name = "my model"
-    slot_nbr = 3
-
-    def __init__(self, model_factory):
-        self.symbols = [
-            "fake symbol 1",
-            "fake symbol 2",
-            "fake symbol 3",
-            ]
-
-    def pop_symbol(self):
-        return self.symbols.pop()
-
-    def get_status(self, symbol):
-        return "status for {}".format(symbol)
+from FakeModel import MyModel
 
 class TestSession(unittest.TestCase):
 
@@ -44,10 +26,11 @@ class TestSession(unittest.TestCase):
         self.session.add_player("tata")
         connection = mock.Mock()
         self.session.connect(connection, "tata")
+        self.session.connect(mock.Mock(), "tata")
         self.session.disconnect(connection, "tata")
-        self.assertEqual(
-            len(self.session.players['tata'].connections),
-            0)
+        self.assertNotIn(
+            connection,
+            self.session.players['tata'].connections)
 
     def test_should_allow_to_push_data_to_a_player(self):
         conn = mock.Mock()
@@ -107,32 +90,4 @@ class TestSession(unittest.TestCase):
              "slots" : 3})
 
 
-class TestSessionBroker(unittest.TestCase):
-
-    def setUp(self):
-        self.session_broker = session.SessionBroker()
-        self.session_broker.registerGame('my-game', MyModel)
-
-    def test_should_allow_to_create_a_session(self):
-        self.session_broker.create_session('my-game')
-
-    def test_should_create_a_session_with_a_model(self):
-        id = self.session_broker.create_session('my-game')
-        session = self.session_broker.get_session(id)
-        self.assertIsInstance(session.model, MyModel)
-
-    def test_should_get_a_session_by_its_id(self):
-        id = self.session_broker.create_session('my-game')
-        session = self.session_broker.get_session(id)
-
-    def test_should_provide_the_list_of_session(self):
-        self.session_broker.create_session('my-game')
-        self.session_broker.create_session('my-game')
-        sessions = self.session_broker.get_sessions()
-        self.assertEqual(len(sessions.values()), 2)
-        self.assertEqual(
-            sessions.values()[0],
-            {"players" : 0,
-             "slots" : 3,
-             "name" : "my model"})
 

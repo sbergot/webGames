@@ -1,6 +1,6 @@
 import tornadio2
 import tornadio2.conn
-from session import SESSION_BROKER
+from session_broker import SESSION_BROKER
 
 class GameConnection(tornadio2.conn.SocketConnection):
 
@@ -18,6 +18,7 @@ class GameConnection(tornadio2.conn.SocketConnection):
 
     @tornadio2.event
     def checkin(self, player_name, player_id, session_id):
+        self.register_session(player_id, session_id)
         self.emit_player(
             'get-symbol',
             symbol=self.game_session.get_symbol(player_id))

@@ -9,7 +9,23 @@ class TestSessionBroker(unittest.TestCase):
         self.session_broker.registerGame('my-game', MyModel)
 
     def test_should_allow_to_create_a_session(self):
-        self.session_broker.create_session('my-game')
+        id = self.session_broker.create_session('my-game')
+        self.assertIn(id, self.session_broker.sessions)
+
+    def test_should_allow_to_remove_a_session(self):
+        id = self.session_broker.create_session('my-game')
+        self.session_broker.remove(id)
+        self.assertNotIn(id, self.session_broker.sessions)
+
+    def test_should_remove_a_session_if_its_not_alive_anymore(self):
+        id = self.session_broker.create_session('my-game')
+        session = self.session_broker.get_session(id)
+        session.add_player("tata")
+        self.session_broker.kill_if_dead(id)
+        self.assertIn(id, self.session_broker.sessions)
+        session.remove("tata")
+        self.session_broker.kill_if_dead(id)
+        self.assertNotIn(id, self.session_broker.sessions)
 
     def test_should_create_a_session_with_a_model(self):
         id = self.session_broker.create_session('my-game')

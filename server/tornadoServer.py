@@ -4,9 +4,9 @@ from tornadio2 import TornadioRouter, SocketServer, SocketConnection
 import tictactoe.connection
 import tictactoe.model
 import lobby
-import session
+from session_broker import SESSION_BROKER
 
-session.SESSION_BROKER.registerGame("tictactoe", tictactoe.model.TicTacToe)
+SESSION_BROKER.registerGame("tictactoe", tictactoe.model.TicTacToe)
 
 ROOT = op.normpath(op.dirname(__file__))
 BASE = op.join(ROOT, '..')
@@ -21,9 +21,8 @@ class FileServer(tornado.web.StaticFileHandler):
     def set_extra_headers(self, path):
         self.set_header("Cache-control", "no-cache")
 
-GameRouter = TornadioRouter(MainConnection)
 
-handlers = [
+HANDLERS = [
     (r'/app/(.*)',
      FileServer,
      {'path': op.join(BASE, "app"),
@@ -33,15 +32,21 @@ handlers = [
      {'path': op.join(BASE, "test")}),
     ]
 
-application = tornado.web.Application(
-    GameRouter.apply_routes(handlers),
-    debug=True,
-    socket_io_port = 8001
-    )
+GAME_ROUTER = TornadioRouter(MainConnection)
+
+def config_server(socket_io_port, debug = False):
+    return tornado.web.Application(
+        GAME_ROUTER.apply_routes(HANDLERS),
+        debug=debug,
+        socket_io_port = socket_io_port
+        )
 
 def run():
-    import logging
-    logging.getLogger().setLevel(logging.DEBUG)
+    debug = True
+    if debug:
+        import logging
+        logging.getLogger().setLevel(logging.DEBUG)
+    application = config_server(8001, debug)
     SocketServer(application)
 
 if __name__ == "__main__":

@@ -1,6 +1,11 @@
 from player import Player
 
 class Session:
+    """
+    Holds a game model and a pool of players.
+    A session offers communication between players & common game
+    operations.
+    """
 
     def __init__(self, model):
         self.players = {}
@@ -9,11 +14,20 @@ class Session:
     def add_player(self, id):
         self.players[id] = Player(self.model.pop_symbol())
 
+    def remove(self, id):
+        del self.players[id]
+
+    def is_alive(self):
+      return bool(self.players)  
+
     def connect(self, conn, player_id):
         self.players[player_id].connect(conn)
 
     def disconnect(self, conn, player_id):
-        self.players[player_id].disconnect(conn)
+        player = self.players[player_id]
+        player.disconnect(conn)
+        if not player.is_alive():
+            self.remove(player_id)
 
     def emit(self, event, data, player_id):
         self.players[player_id].emit(event, data)

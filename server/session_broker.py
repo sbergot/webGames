@@ -29,4 +29,11 @@ class SessionBroker:
             res[id] = self.sessions[id].get_description()
         return res
 
+    def remove(self, id):
+        del self.sessions[id]
+
+    def kill_if_dead(self, id):
+        if not self.get_session(id).is_alive():
+            self.remove(id)
+
 SESSION_BROKER = SessionBroker()

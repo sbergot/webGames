@@ -1,6 +1,6 @@
 import tornadio2
 import tornadio2.conn
-from session import SESSION_BROKER
+from session_broker import SESSION_BROKER
 
 class LobbyConnection(tornadio2.conn.SocketConnection):
 

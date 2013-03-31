@@ -32,12 +32,34 @@ class TestSession(unittest.TestCase):
             connection,
             self.session.players['tata'].connections)
 
-    def test_should_allow_to_push_data_to_a_player(self):
+    def test_should_allow_to_remove_a_connection(self):
+        self.session.add_player("tata")
+        connection = mock.Mock()
+        self.session.connect(connection, "tata")
+        self.session.connect(mock.Mock(), "tata")
+        self.session.disconnect(connection, "tata")
+        self.assertNotIn(
+            connection,
+            self.session.players['tata'].connections)
+
+    def test_should_allow_to_remove_a_player(self):
+        self.session.add_player("tata")
+        self.session.remove("tata")
+        self.assertNotIn("tata", self.session.players)
+
+    def test_should_tell_if_its_alive(self):
+        self.assertFalse(self.session.is_alive())
+        self.session.add_player("tata")
+        self.assertTrue(self.session.is_alive())
+        self.session.remove("tata")
+        self.assertFalse(self.session.is_alive())
+
+    def test_should_remove_a_player_if_its_not_alive_anymore(self):
         conn = mock.Mock()
         self.session.add_player("tata")
         self.session.connect(conn, "tata")
-        self.session.emit("event", {"toto" : "titi"}, "tata")
-        conn.emit.assert_called_with("event", {"toto" : "titi"})
+        self.session.disconnect(conn, "tata")
+        self.assertNotIn("tata", self.session.players)
 
     def test_should_allow_to_broadcast_data_to_all_players(self):
         conn_tata = mock.Mock()

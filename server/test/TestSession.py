@@ -40,6 +40,15 @@ class TestSession(unittest.TestCase):
             len(self.session.players['tata'].connections),
             1)
 
+    def test_should_allow_to_remove_a_connection(self):
+        self.session.add_player("tata")
+        connection = mock.Mock()
+        self.session.connect(connection, "tata")
+        self.session.disconnect(connection, "tata")
+        self.assertEqual(
+            len(self.session.players['tata'].connections),
+            0)
+
     def test_should_allow_to_push_data_to_a_player(self):
         conn = mock.Mock()
         self.session.add_player("tata")
@@ -119,7 +128,7 @@ class TestSessionBroker(unittest.TestCase):
     def test_should_provide_the_list_of_session(self):
         self.session_broker.create_session('my-game')
         self.session_broker.create_session('my-game')
-        sessions = self.session_broker.getSessions()
+        sessions = self.session_broker.get_sessions()
         self.assertEqual(len(sessions.values()), 2)
         self.assertEqual(
             sessions.values()[0],

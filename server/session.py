@@ -13,6 +13,9 @@ class Session:
     def connect(self, conn, player_id):
         self.players[player_id].connect(conn)
 
+    def disconnect(self, conn, player_id):
+        self.players[player_id].disconnect(conn)
+
     def emit(self, event, data, player_id):
         self.players[player_id].emit(event, data)
 

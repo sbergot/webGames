@@ -95,6 +95,9 @@ function LobbyCtrl($scope, $location, socket) {
 	    player_name : $scope.player_name
         });
     };
+    $scope.isEmpty = function (obj) {
+       return angular.equals({},obj); 
+    };
 }
 
 function footerCtlr($scope, version) {

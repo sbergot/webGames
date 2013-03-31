@@ -11,6 +11,9 @@
 
 <div id="game_sessions" class="lobby-section">
   <h1>Join a game:</h1>
+  <span ng-show="isEmpty(sessions)">
+    No game session yet! {{sessions.length}}
+  </span>
   <ol>
     <li ng-repeat="(id, session) in sessions"
         ng-click="join_game(id)"

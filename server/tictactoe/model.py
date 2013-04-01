@@ -98,13 +98,13 @@ class TicTacToe(game.Game):
     def play(self, box, symbol):
         if not self.current == symbol:
             self.on_invalid_operation.fire(
-                self.current,
+                symbol,
                 "not your turn to play")
             return
             
         if not self.grid.isfree(box):
             self.on_invalid_operation.fire(
-                self.current,
+                symbol,
                 "this slot is occupied")
             return
 

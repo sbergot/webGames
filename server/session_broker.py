@@ -1,4 +1,5 @@
 import uuid
+import event
 from session import Session
 
 class SessionBroker:
@@ -10,6 +11,7 @@ class SessionBroker:
     def __init__(self):
         self.games = {}
         self.sessions = {}
+        self.on_sessions_update = event.Event()
 
     def get_session(self, id):
         return self.sessions[id]
@@ -19,6 +21,7 @@ class SessionBroker:
         session = Session(self.games[game])
         session.on_player_remove += lambda : self.kill_if_dead(id)
         self.sessions[id] = session
+        self.on_sessions_update.fire()
         return id
 
     def registerGame(self, name, constructor):
@@ -32,6 +35,7 @@ class SessionBroker:
 
     def remove(self, id):
         del self.sessions[id]
+        self.on_sessions_update.fire()
 
     def kill_if_dead(self, id):
         if not self.get_session(id).is_alive():

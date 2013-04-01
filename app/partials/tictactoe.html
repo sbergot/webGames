@@ -17,6 +17,10 @@
 <div id="contextual-menu" class="lobby-section">
   <div>Player symbol: {{symbol}}</div>
   <div>game status: {{status}}</div>
+  <div class="error"
+       ng-show="error_message">
+    {{error_message}}
+  </div>
   <ul>
     <li class="button" ng-click="quit()">quit</li>
   </ul>

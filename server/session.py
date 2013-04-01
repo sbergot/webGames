@@ -16,6 +16,8 @@ class Session:
         self.model.on_invalid_operation += self.emit_error
 
     def add_player(self, id, name):
+        if id in self.players:
+            return
         player = Player(name, self.model.pop_symbol())
         self.players[id] = player
         self.symbol_map[player.symbol] = player
@@ -32,7 +34,7 @@ class Session:
 
     def emit_error(self, symbol, message):
         self.symbol_map[symbol].emit('error',
-                                     message=message)
+                                     {"message" : message})
 
     def remove(self, id):
         del self.symbol_map[self.players[id].symbol]
@@ -54,6 +56,9 @@ class Session:
 
     def is_alive(self):
       return bool(self.players)  
+
+    def is_full(self):
+      return len(self.players) == self.model.slot_nbr
 
     def disconnect(self, conn, player_id):
         player = self.players[player_id]

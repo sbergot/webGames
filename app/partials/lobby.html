@@ -7,6 +7,10 @@
         {{game}}
     </li>
   </ol>
+  <div class="error"
+       ng-show="error_message">
+    {{error_message}}
+  </div>
 </div>
 
 <div id="main-area" class="lobby-section">
@@ -18,7 +22,7 @@
     <li ng-repeat="(id, session) in sessions"
         ng-click="join_game(id)"
 	class="button">
-        {{session.name}}
+        {{session.name}} - {{session.players}} / {{session.slots}}
     </li>
   <ol>
 </div>

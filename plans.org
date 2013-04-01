@@ -28,7 +28,9 @@
 ***** DONE should a list of games waiting for player
 ***** DONE should allow to create a game
 ***** DONE should allow to join a game
-***** TODO if game is full, refuse the connection
+***** DONE if the player is already in the game, simply redirect to the page
+***** TODO if the game is full, refuse the connection
+***** DONE the game list should be updated in real time
 **** game screen
 ***** DONE game status should be fetched when connecting to a game
 ***** DONE a list of slot with status should be displayed
@@ -52,20 +54,18 @@
 *** add account status
     name, disconnect
 ** games
-*** tictactoe
+*** DONE tictactoe
 **** DONE make it work for 2 players
 **** DONE move the server code in a proper model
-**** TODO test the tic tac toe model
-**** TODO add animations
+**** DONE test the tic tac toe model
 *** alexandros
 **** grid
      3D grid: {0..n, 0..m, 0,1}
 
      the third coord tells if a point is centered or cornered
-** libs
-*** socket.io
-*** angular
-*** jquery
+** libs to integrate
+*** DONE socket.io
+*** DONE angular
+*** TODO angular-ui
 ** hosting
-*** host on heroku
-*** check amazone webservice
+*** TODO host on heroku

@@ -4,7 +4,7 @@ class MyModel(game.Game):
     name = "my model"
     slot_nbr = 3
 
-    def __init__(self, model_factory):
+    def __init__(self):
         super(MyModel, self).__init__()
         self.symbols = [
             "fake symbol 1",

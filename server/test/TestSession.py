@@ -54,6 +54,15 @@ class TestSession(unittest.TestCase):
         self.session.remove("tata")
         self.assertFalse(self.session.is_alive())
 
+    def test_should_tell_if_its_full(self):
+        self.assertFalse(self.session.is_full())
+        self.session.add_player("tata", "toto")
+        self.assertFalse(self.session.is_full())
+        self.session.add_player("tata2", "toto2")
+        self.assertFalse(self.session.is_full())
+        self.session.add_player("tata3", "toto3")
+        self.assertTrue(self.session.is_full())
+
     def test_should_remove_a_player_if_its_not_alive_anymore(self):
         conn = mock.Mock()
         self.session.add_player("tata", "toto")

@@ -79,6 +79,11 @@ ol, ul
     background-color : #707070;
 }
 
+.error
+{
+    color : red;
+}
+
 /* lobby layout */
 
 #contextual-menu

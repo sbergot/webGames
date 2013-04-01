@@ -19,7 +19,7 @@ function ConnectionConfig($scope, conn, session_id) {
     });
 }
 
-function TictactoeCtrl($scope, socket, $routeParams, $location) {
+function TictactoeCtrl($scope, socket, $routeParams, $location, $timeout) {
     $scope.status = "not connected";
     $scope.symbol = "unknown";
     $scope.grid = [
@@ -38,7 +38,7 @@ function TictactoeCtrl($scope, socket, $routeParams, $location) {
     $scope.play = function(cell) {
         var x = parseInt(cell[0]) - 1;
         var y = parseInt(cell[1]) - 1;
-        $scope.grid[x][y].value = $scope.symbol;
+        //$scope.grid[x][y].value = $scope.symbol;
         conn.emit("play", {
             box : cell,
             symbol : $scope.symbol,
@@ -52,6 +52,12 @@ function TictactoeCtrl($scope, socket, $routeParams, $location) {
     conn.on('update-status', function(data) {
         $scope.status = data.status;
         $scope.grid = data.grid;
+    });
+    conn.on('error', function(data) {
+	$scope.error_message = data.message;
+	$timeout(function() {
+	    $scope.error_message = "";
+	}, 2000);
     });
 }
 
@@ -75,9 +81,17 @@ function MainCtrl($scope, $cookies, socket, guid) {
     $scope.games = ["tictactoe"];
 }
 
-function LobbyCtrl($scope, $location, socket) {
+function LobbyCtrl($scope, $location, $timeout, socket) {
     var conn = socket.connect('lobby');
-    conn.on('get_sessions', function(data) {$scope.sessions = data.sessions;});
+    conn.on('get-sessions', function(data) {
+	$scope.sessions = data.sessions;
+    });
+    conn.on('error', function(data) {
+	$scope.error_message = data.message;
+	$timeout(function() {
+	    $scope.error_message = "";
+	}, 2000);
+    });
     conn.on('get-session-access', function(data) {
         $location.path('/' + data.name + '/session/' + data.id);
     });

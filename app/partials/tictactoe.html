@@ -3,7 +3,7 @@
 <div id="players">
   <h1>Players</h1>
   <ol> 
-    <li ng-repeat="player in players" class="button">
+    <li ng-repeat="player in players" class="slot">
       <span ng-show="player.occupied">
         {{player.name}} : {{player.symbol}}
       </span>
@@ -14,8 +14,15 @@
   </ol>
 </div>
 
-<div id="board">
+<div id="contextual-menu" class="lobby-section">
+  <div>Player symbol: {{symbol}}</div>
+  <div>game status: {{status}}</div>
+  <ul>
+    <li class="button" ng-click="quit()">quit</li>
+  </ul>
+</div>
 
+<div id="main-area">
   <table>
     <tr ng-repeat="row in grid">
       <td ng-repeat="cell in row" class="box" ng-click="play(cell.coord)">
@@ -23,12 +30,5 @@
       </td>
     </tr>
   </table>
-  <div>Player symbol: {{symbol}}</div>
-  <div>game status: {{status}}</div>
-  <ul id="buttons">
-    <li class="button">reset</li>
-    <li class="button" ng-click="quit()">quit</li>
-  </ul>
-
 </div>
 

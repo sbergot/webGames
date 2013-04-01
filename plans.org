@@ -49,7 +49,6 @@
     + if computer: generated name, "kick" button
 *** add account status
     name, disconnect
-*** add notification area
 ** games
 *** tictactoe
 **** DONE make it work for 2 players

@@ -1,4 +1,4 @@
-<div id="games" class="lobby-section">
+<div id="contextual-menu" class="lobby-section">
   <h1>Create a new game:</h1>
   <ol>
     <li ng-repeat="game in games"
@@ -9,16 +9,16 @@
   </ol>
 </div>
 
-<div id="game_sessions" class="lobby-section">
+<div id="main-area" class="lobby-section">
   <h1>Join a game:</h1>
   <span ng-show="isEmpty(sessions)">
-    No game session yet! {{sessions.length}}
+    No game session yet!
   </span>
   <ol>
     <li ng-repeat="(id, session) in sessions"
         ng-click="join_game(id)"
 	class="button">
-        {{session.name}} - {{id}}
+        {{session.name}}
     </li>
   <ol>
 </div>

@@ -5,6 +5,7 @@ class MyModel(game.Game):
     slot_nbr = 3
 
     def __init__(self, model_factory):
+        super(MyModel, self).__init__()
         self.symbols = [
             "fake symbol 1",
             "fake symbol 2",

@@ -5,14 +5,8 @@ class TicTacToeConnection(GameConnection):
 
     @tornadio2.event
     def play(self, box, symbol, fullGrid):
-        result = self.game_session.model.play(box, symbol)
-        if result["type"] == "error":
-            self.emit_player('play', **result)
-        else:
-            self.broadcast('play', **result)
+        self.game_session.model.play(box, symbol)
 
     @tornadio2.event
     def resetGrid(self, name):
-        GAME.grid.reset()
-        status=grid.check_status()
-        self.broadcast('newturn', grid=grid.grid, status=status)
+        self.game_session.model.reset_grid()

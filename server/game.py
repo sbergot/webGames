@@ -1,4 +1,7 @@
-class Game:
+from event import Event
 
-    def __init__(self, session):
-        self.session = session
+class Game(object):
+
+    def __init__(self):
+        self.on_status_update = Event()
+        self.on_invalid_operation = Event()

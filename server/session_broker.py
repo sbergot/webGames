@@ -17,6 +17,7 @@ class SessionBroker:
     def create_session(self, game):
         id = str(uuid.uuid4())
         session = Session(self.games[game])
+        session.on_player_remove += lambda : self.kill_if_dead(id)
         self.sessions[id] = session
         return id
 

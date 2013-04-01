@@ -49,7 +49,7 @@ function TictactoeCtrl($scope, socket, $routeParams, $location) {
 	conn.emit("quit");
 	$location.path("/lobby");
     };
-    conn.on('play', function(data) {
+    conn.on('update-status', function(data) {
         $scope.status = data.status;
         $scope.grid = data.grid;
     });

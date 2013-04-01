@@ -72,43 +72,46 @@ class TicTacToe(game.Game):
     name = "tictactoe"
     slot_nbr = 2
 
-    def __init__(self, session):
-        game.Game.__init__(self, session)
+    def __init__(self):
+        game.Game.__init__(self)
         self.symbols = ["x", "o"]
         self.current = self.symbols[0]
         self.grid = Grid()
+        self.status = "unknown"
 
     def pop_symbol(self):
         return self.symbols.pop()
 
     def get_status(self, symbol):
-        return self.grid.check_status()
+        return {
+            "status" : self.status,
+            "grid" : self.grid.grid,
+            }
 
     def switch_player(self):
         self.current = "x" if self.current == "o" else "o"
 
+    def reset_grid(self):
+        self.grid.reset()
+        self.on_status_update.fire()
+
     def play(self, box, symbol):
         if not self.current == symbol:
-            return {
-                "status" : "not your turn to play",
-                "grid" : self.grid.grid,
-                "type" : "error",
-                }
+            self.on_invalid_operation.fire(
+                self.current,
+                "not your turn to play")
+            return
             
         if not self.grid.isfree(box):
-            return {
-                "status" : "{} is already taken".format(box),
-                "grid" : self.grid.grid,
-                "type" : "error",
-                }
+            self.on_invalid_operation.fire(
+                self.current,
+                "this slot is occupied")
+            return
 
         self.grid.play(box, symbol)
         self.switch_player()
-        return {
-            "status" : self.grid.check_status(),
-            "grid" : self.grid.grid,
-            "type" : "continue",
-            }
+        self.status = self.grid.check_status()
+        self.on_status_update.fire()
 
 if __name__ == "__main__":
     print get_rows()

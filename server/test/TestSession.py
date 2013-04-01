@@ -17,7 +17,7 @@ class TestSession(unittest.TestCase):
 
     def test_should_receive_connection_of_players(self):
         self.session.add_player("tata", "toto")
-        self.session.connect(mock.Mock(), "tata")
+        self.session.players["tata"].connect(mock.Mock())
         self.assertEqual(
             len(self.session.players['tata'].connections),
             1)
@@ -25,8 +25,8 @@ class TestSession(unittest.TestCase):
     def test_should_allow_to_remove_a_connection(self):
         self.session.add_player("tata", "toto")
         connection = mock.Mock()
-        self.session.connect(connection, "tata")
-        self.session.connect(mock.Mock(), "tata")
+        self.session.players["tata"].connect(connection)
+        self.session.players["tata"].connect(mock.Mock())
         self.session.disconnect(connection, "tata")
         self.assertNotIn(
             connection,
@@ -35,8 +35,8 @@ class TestSession(unittest.TestCase):
     def test_should_allow_to_remove_a_connection(self):
         self.session.add_player("tata", "toto")
         connection = mock.Mock()
-        self.session.connect(connection, "tata")
-        self.session.connect(mock.Mock(), "tata")
+        self.session.players["tata"].connect(connection)
+        self.session.players["tata"].connect(mock.Mock())
         self.session.disconnect(connection, "tata")
         self.assertNotIn(
             connection,
@@ -57,38 +57,20 @@ class TestSession(unittest.TestCase):
     def test_should_remove_a_player_if_its_not_alive_anymore(self):
         conn = mock.Mock()
         self.session.add_player("tata", "toto")
-        self.session.connect(conn, "tata")
+        self.session.players["tata"].connect(conn)
         self.session.disconnect(conn, "tata")
         self.assertNotIn("tata", self.session.players)
 
     def test_should_allow_to_broadcast_data_to_all_players(self):
         conn_tata = mock.Mock()
         self.session.add_player("tata", "toto")
-        self.session.connect(conn_tata, "tata")
+        self.session.players["tata"].connect(conn_tata)
         conn_robert = mock.Mock()
         self.session.add_player("robert", "toto")
-        self.session.connect(conn_robert, "robert")
+        self.session.players["robert"].connect(conn_robert)
         self.session.broadcast("event", {"key" : "value"})
         conn_tata.emit.assert_called_with("event", {"key" : "value"})
         conn_robert.emit.assert_called_with("event", {"key" : "value"})
-        
-    def test_should_allow_player_to_get_a_symbol(self):
-        self.session.add_player("tata", "toto")
-        self.session.add_player("titi", "toto")
-        self.assertEqual(
-            self.session.get_symbol("tata"),
-            "fake symbol 3")
-        self.assertEqual(
-            self.session.get_symbol("titi"),
-            "fake symbol 2")
-
-    def test_should_provide_a_status_of_the_game(self):
-        conn_tata = mock.Mock()
-        self.session.add_player("tata", "toto")
-        self.session.connect(conn_tata, "tata")
-        self.assertEqual(
-            self.session.get_status("tata"),
-            "status for fake symbol 3")
 
     def test_should_provide_the_list_of_players(self):
         self.session.add_player("tata", "toto")

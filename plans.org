@@ -38,6 +38,8 @@
 **** TODO the server can push notifications
 **** TODO the notifications stack vertically
 **** TODO the notifications fade out after a few seconds
+*** TODO player pool
+    factor a player pool class from the session class
 *** add menu items
 **** lobby
      show session for a given game

@@ -24,7 +24,6 @@ class TestSessionBroker(unittest.TestCase):
         self.session_broker.kill_if_dead(id)
         self.assertIn(id, self.session_broker.sessions)
         session.remove("tata")
-        self.session_broker.kill_if_dead(id)
         self.assertNotIn(id, self.session_broker.sessions)
 
     def test_should_create_a_session_with_a_model(self):

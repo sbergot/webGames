@@ -20,7 +20,7 @@
 **** status
 **** state
 ** website
-*** TODO add game session
+*** add game session
 **** upper bar
 ***** DONE allow to change id
 ***** DONE allow to change name
@@ -29,17 +29,16 @@
 ***** DONE should allow to create a game
 ***** DONE should allow to join a game
 ***** DONE if the player is already in the game, simply redirect to the page
-***** TODO if the game is full, refuse the connection
+***** DONE if the game is full, refuse the connection
 ***** DONE the game list should be updated in real time
 **** game screen
 ***** DONE game status should be fetched when connecting to a game
 ***** DONE a list of slot with status should be displayed
 ***** DONE when disconnecting, kill the game and remove it from the list
-*** TODO notifications
+*** notifications
     area located in the lower right corner of the main zone
-**** TODO the server can push notifications
-**** TODO the notifications stack vertically
-**** TODO the notifications fade out after a few seconds
+**** DONE simple notifications
+**** TODO animated notifications
 *** TODO player pool
     factor a player pool class from the session class
 *** add menu items
